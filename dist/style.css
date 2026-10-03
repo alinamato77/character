@@ -45,3 +45,14 @@ footer{background:#f2dfbd;border-top:3px solid #b58a67;color:#795a46}.hint{color
 /* Unified pixel typography. */
 :root,body,header,header .brand,.brand,.edition,h1,h2,h3,h4,h5,h6,.bubble,.state,.hint,.controls button,.controls button span,#loading,.companion-toolbar .state{font-family:"Geist Pixel",sans-serif;font-optical-sizing:auto;font-weight:400;font-style:normal;font-variation-settings:"ELSH" 0}
 header{gap:20px}.edition{letter-spacing:0;text-align:right}
+
+/* One calm interaction tip at a time, moving from top to bottom. */
+.tips-footer{display:flex;align-items:center;gap:12px;padding:12px 20px}
+.tip-window{position:relative;flex:1;min-width:0;height:3.6em;overflow:hidden;font-size:12px}
+.tip{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;line-height:1.6;margin:0;text-align:center;padding:0 8px}
+.tip[hidden]{display:none}.tip.entering{animation:tip-in .48s cubic-bezier(.22,.61,.36,1) both}.tip.leaving{animation:tip-out .48s cubic-bezier(.22,.61,.36,1) both}
+.tips-pause{flex:none;width:28px;height:28px;border:1px solid #b58a67;border-radius:2px;background:#fff3d9;color:#795a46;padding:0;box-shadow:2px 2px 0 #cdb18a;font-size:12px;line-height:1}
+.tips-pause:hover{background:#fff9e9}.tips-pause:active{transform:translateY(1px);box-shadow:1px 1px 0 #cdb18a}
+@keyframes tip-in{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes tip-out{from{transform:translateY(0);opacity:1}to{transform:translateY(100%);opacity:0}}
+@media(prefers-reduced-motion:reduce){.tip.entering,.tip.leaving{animation:none}}
