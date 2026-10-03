@@ -1,0 +1,92 @@
+{
+  "walk": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 226.0,
+    "scale": 0.43363,
+    "ground_y": 330,
+    "frames": 76
+  },
+  "sit": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 86.0,
+    "scale": 1.13953,
+    "ground_y": 330,
+    "frames": 86
+  },
+  "hold-left": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 218.0,
+    "scale": 0.44954,
+    "ground_y": 330,
+    "frames": 144
+  },
+  "jump": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 224.0,
+    "scale": 0.4375,
+    "ground_y": 330,
+    "frames": 104
+  },
+  "feed": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 238.0,
+    "scale": 0.41176,
+    "ground_y": 330,
+    "frames": 72
+  },
+  "stand": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 214.0,
+    "scale": 0.45794,
+    "ground_y": 330,
+    "frames": 108
+  },
+  "rest": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 218.0,
+    "scale": 0.44954,
+    "ground_y": 330,
+    "frames": 192
+  },
+  "awake": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 226.0,
+    "scale": 0.43363,
+    "ground_y": 330,
+    "frames": 27
+  },
+  "hold-right": {
+    "canvas": [
+      280,
+      350
+    ],
+    "face_reference_width": 220.0,
+    "scale": 0.44545,
+    "ground_y": 330,
+    "frames": 88
+  }
+}

@@ -37,14 +37,15 @@ function beginSit(forFood=false){
 function startDefaultSit(){if(!eating&&!petting&&!holding&&!standing)beginSit()}
 function startStanding(){clearTimeout(sequenceTimer);seatedRest=false;sitting=false;standing=true;defaultWalking=false;$('state').textContent='Standing up';switchVideo(stand,true)}
 stand.addEventListener('ended',()=>{if(!standing)return;const feedNext=queuedFeed;resumeDefault();if(feedNext)startFeeding()});
-function throwToast(){
- $('state').textContent='Catching toast';$('feed-label').textContent='Catching…';
- const toast=document.createElement('img');toast.src='assets/button-toast.png';toast.alt='';toast.className='flying-toast';$('particles').append(toast);
- sequenceTimer=setTimeout(()=>{toast.remove();sitting=false;$('state').textContent='Enjoying toast';$('feed-label').textContent='Eating…';switchVideo(eat,true);say('Got it! Time to eat.',10000)},750);
+// The feed clip contains the toss, catch, and bite; play it once after sitting.
+function playFeedAnimation(){
+ clearTimeout(sequenceTimer);sitting=false;seatedRest=false;
+ $('state').textContent='Enjoying toast';$('feed-label').textContent='Eating…';
+ switchVideo(eat,true);say('A little toast for me? Thank you!',10000);
 }
-sit.addEventListener('ended',()=>{if(!sitting)return;if(eating)throwToast();else{seatedRest=true;$('state').textContent='Resting';switchVideo(rest,true)}});
+sit.addEventListener('ended',()=>{if(!sitting)return;if(eating)playFeedAnimation();else{seatedRest=true;$('state').textContent='Resting';switchVideo(rest,true)}});
 rest.addEventListener('ended',()=>{if(seatedRest&&!eating)startStanding()});
-function startFeeding(){if(eating)return;if(standing){queuedFeed=true;return;}if(seatedRest){clearTimeout(sequenceTimer);rest.pause();seatedRest=false;eating=true;feed.disabled=true;throwToast();return;}if(holding)releaseHand();eating=true;feed.disabled=true;$('feed-label').textContent='Sitting first…';if(!sitting)beginSit(true)}
+function startFeeding(){if(eating)return;if(standing){queuedFeed=true;return;}if(seatedRest){clearTimeout(sequenceTimer);rest.pause();seatedRest=false;eating=true;feed.disabled=true;playFeedAnimation();return;}if(holding)releaseHand();eating=true;feed.disabled=true;$('feed-label').textContent='Sitting first…';if(!sitting)beginSit(true)}
 feed.addEventListener('click',startFeeding);
 eat.addEventListener('ended',finishEating);
 for(const video of videos)video.addEventListener('error',()=>{if(video===holdLeft||video===holdRight)releaseHand();if(video===stand||video===rest){standing=false;resumeDefault();}if(video===eat||video===sit){if(eating)finishEating();else resumeDefault();}say('Couldn’t load the animation. Please refresh and try again.',10000)});
