@@ -1,6 +1,6 @@
-# small.a
+# bimba
 
-A companion. A cozy pixel companion built with HTML, CSS, JavaScript, and local video animations.
+Can you play with me? A cozy pixel companion built with HTML, CSS, JavaScript, and local video animations.
 
 ## Run locally
 
@@ -12,7 +12,7 @@ python3 -m http.server 8080 --directory dist
 
 ## Interactions
 
-- Hold hands and move your cursor to lead small.a; click again to let go.
+- Hold hands and move your cursor to lead bimba; click again to let go.
 - Pet, feed toast, or chat using the controls.
 - Drag the character to reposition her.
 
