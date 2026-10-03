@@ -1,8 +1,8 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const room=$('room'),pet=$('pet'),canvas=$('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
-const idle=$('idle'),walk=$('walk'),awake=$('awake'),eat=$('eat'),sit=$('sit'),stand=$('stand'),feed=$('feed'),holdLeft=$('hold-left-video'),holdRight=$('hold-right-video');
-const videos=[idle,walk,awake,sit,stand,eat,holdLeft,holdRight];let active=idle,eating=false,petting=false,drag=null,bubbleTimer,patTimer,actionTimer;
+const idle=$('idle'),walk=$('walk'),awake=$('awake'),eat=$('eat'),sit=$('sit'),rest=$('rest'),stand=$('stand'),feed=$('feed'),holdLeft=$('hold-left-video'),holdRight=$('hold-right-video');
+const videos=[idle,walk,awake,sit,rest,stand,eat,holdLeft,holdRight];let active=idle,eating=false,petting=false,drag=null,bubbleTimer,patTimer,actionTimer;
 let defaultWalking=false,direction=1,lastFrame=0,sitting=false,standing=false,seatedRest=false,queuedFeed=false,sitTimer,sequenceTimer,holding=false,holdDirection=1,holdTarget=null;
 function switchVideo(video,restart=false){videos.forEach(v=>v.pause());active=video;if(restart)video.currentTime=0;play(video)}
 function resumeDefault(){standing=false;seatedRest=false;queuedFeed=false;holding=false;holdTarget=null;document.body.classList.remove('holding-hand');$('hold-label').textContent='Hold';$('hold-menu').hidden=true;clearTimeout(actionTimer);clearTimeout(sitTimer);clearTimeout(sequenceTimer);sitting=false;petting=false;defaultWalking=false;switchVideo(idle,true);$('state').textContent='Little hops';actionTimer=setTimeout(toggleDefault,4300);sitTimer=setTimeout(startDefaultSit,20000)}
@@ -42,11 +42,12 @@ function throwToast(){
  const toast=document.createElement('img');toast.src='assets/button-toast.png';toast.alt='';toast.className='flying-toast';$('particles').append(toast);
  sequenceTimer=setTimeout(()=>{toast.remove();sitting=false;$('state').textContent='Enjoying toast';$('feed-label').textContent='Eating…';switchVideo(eat,true);say('Got it! Time to eat.',10000)},750);
 }
-sit.addEventListener('ended',()=>{if(!sitting)return;if(eating)throwToast();else{seatedRest=true;$('state').textContent='Resting';sequenceTimer=setTimeout(startStanding,10000)}});
-function startFeeding(){if(eating)return;if(standing){queuedFeed=true;return;}if(seatedRest){clearTimeout(sequenceTimer);seatedRest=false;eating=true;feed.disabled=true;throwToast();return;}if(holding)releaseHand();eating=true;feed.disabled=true;$('feed-label').textContent='Sitting first…';beginSit(true)}
+sit.addEventListener('ended',()=>{if(!sitting)return;if(eating)throwToast();else{seatedRest=true;$('state').textContent='Resting';switchVideo(rest,true)}});
+rest.addEventListener('ended',()=>{if(seatedRest&&!eating)startStanding()});
+function startFeeding(){if(eating)return;if(standing){queuedFeed=true;return;}if(seatedRest){clearTimeout(sequenceTimer);rest.pause();seatedRest=false;eating=true;feed.disabled=true;throwToast();return;}if(holding)releaseHand();eating=true;feed.disabled=true;$('feed-label').textContent='Sitting first…';beginSit(true)}
 feed.addEventListener('click',startFeeding);
 eat.addEventListener('ended',finishEating);
-for(const video of videos)video.addEventListener('error',()=>{if(video===holdLeft||video===holdRight)releaseHand();if(video===stand){standing=false;resumeDefault();}if(video===eat||video===sit){if(eating)finishEating();else resumeDefault();}say('Couldn’t load the animation. Please refresh and try again.',10000)});
+for(const video of videos)video.addEventListener('error',()=>{if(video===holdLeft||video===holdRight)releaseHand();if(video===stand||video===rest){standing=false;resumeDefault();}if(video===eat||video===sit){if(eating)finishEating();else resumeDefault();}say('Couldn’t load the animation. Please refresh and try again.',10000)});
 function releaseHand(){if(!holding)return;resumeDefault();say('Letting go. I’ll be right here.')}
 function holdHand(side){if(eating||sitting||standing)return;if(holding){releaseHand();return;}clearTimeout(actionTimer);clearTimeout(sitTimer);clearTimeout(sequenceTimer);petting=false;defaultWalking=false;holding=true;holdDirection=side;holdTarget={x:pet.offsetLeft,y:pet.offsetTop};document.body.classList.add('holding-hand');canvas.style.transform='';$('hold-menu').hidden=true;$('hold-label').textContent='Let go';$('state').textContent=side<0?'Walking left together':'Walking right together';switchVideo(side<0?holdLeft:holdRight,true);say('Hold my hand and move your cursor to lead me.',10000)}
 for(const [v,start] of [[holdLeft,1],[holdRight,1]])v.addEventListener('ended',()=>{if(holding&&active===v){v.currentTime=start;play(v)}});
@@ -76,5 +77,5 @@ function release(e,cancelled=false){if(!drag||drag.id!==e.pointerId)return;let m
 character.addEventListener('pointerup',e=>release(e));character.addEventListener('pointercancel',e=>release(e,true));character.addEventListener('lostpointercapture',e=>release(e,true));
 character.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pat()}const dirs={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20]};if(dirs[e.key]){e.preventDefault();let [x,y]=dirs[e.key];position(pet.offsetLeft+x,pet.offsetTop+y)}});
 window.addEventListener('resize',()=>position(pet.offsetLeft,pet.offsetTop));
-document.addEventListener('visibilitychange',()=>{if(document.hidden){videos.forEach(v=>v.pause());lastFrame=0}else if(!seatedRest&&!active.ended)play(active)});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){videos.forEach(v=>v.pause());lastFrame=0}else if(!active.ended&&!(eating&&active===rest))play(active)});
 resumeDefault();render();
