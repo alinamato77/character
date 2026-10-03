@@ -1,0 +1,54 @@
+{
+  "default": {
+    "source": "idle.mp4",
+    "role": "Default standing loop"
+  },
+  "jump": {
+    "source": "jump.mp4",
+    "role": "Default hopping variation"
+  },
+  "walk": {
+    "source": "walk.mp4",
+    "role": "Default stroll"
+  },
+  "sit": {
+    "source": "sit.mp4",
+    "role": "Standing to sitting; long lead-in trimmed"
+  },
+  "rest": {
+    "source": "rest.mp4",
+    "role": "Eight-second seated rest"
+  },
+  "stand": {
+    "source": "stand.mp4",
+    "role": "Sitting to standing"
+  },
+  "feed": {
+    "source": "feed.mp4",
+    "role": "Feed action introduction; never plays in default"
+  },
+  "eat": {
+    "source": "eat.mp4",
+    "role": "Continues Feed action"
+  },
+  "pet": {
+    "source": "awake.mp4",
+    "role": "Existing Pet clip, bytes unchanged"
+  },
+  "hold-left": {
+    "source": "hold-left.mp4",
+    "role": "Existing Hold left clip, bytes unchanged"
+  },
+  "hold-right": {
+    "source": "hold-right.mp4",
+    "role": "Existing Hold right clip, bytes unchanged"
+  },
+  "hello": {
+    "source": "sit_shake_hands.mp4",
+    "role": "Hello seated wave"
+  },
+  "think": {
+    "source": "finger.mp4",
+    "role": "Random Chat thinking animation"
+  }
+}
