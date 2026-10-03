@@ -4,10 +4,10 @@ A companion. A cozy pixel companion built with HTML, CSS, JavaScript, and local 
 
 ## Run locally
 
-Serve the `public` directory with any static HTTP server, then open it in a browser.
+Serve the `dist` directory with any static HTTP server, then open it in a browser.
 
 ```sh
-python3 -m http.server 8080 --directory public
+python3 -m http.server 8080 --directory dist
 ```
 
 ## Interactions
