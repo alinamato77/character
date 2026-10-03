@@ -28,7 +28,7 @@ function pat(){
  let heart=document.createElement('span');heart.className='heart';heart.textContent='♥';$('particles').append(heart);setTimeout(()=>heart.remove(),1100);
  actionTimer=setTimeout(()=>{petting=false;if(eating){switchVideo(eat);$('state').textContent='Enjoying toast'}else resumeDefault()},2600);
 }
-function finishEating(){eating=false;feed.disabled=false;$('feed-label').textContent='Feed';resumeDefault();say('All full. Thank you!')}
+function finishEating(){eating=false;feed.disabled=false;$('feed-label').textContent='Feed';startStanding();say('All full. Thank you!')}
 function beginSit(forFood=false){
  clearTimeout(actionTimer);clearTimeout(sitTimer);clearTimeout(sequenceTimer);petting=false;defaultWalking=false;sitting=true;standing=false;seatedRest=false;canvas.style.transform='';
  $('state').textContent='Sitting down';switchVideo(sit,true);
@@ -44,7 +44,7 @@ function throwToast(){
 }
 sit.addEventListener('ended',()=>{if(!sitting)return;if(eating)throwToast();else{seatedRest=true;$('state').textContent='Resting';switchVideo(rest,true)}});
 rest.addEventListener('ended',()=>{if(seatedRest&&!eating)startStanding()});
-function startFeeding(){if(eating)return;if(standing){queuedFeed=true;return;}if(seatedRest){clearTimeout(sequenceTimer);rest.pause();seatedRest=false;eating=true;feed.disabled=true;throwToast();return;}if(holding)releaseHand();eating=true;feed.disabled=true;$('feed-label').textContent='Sitting first…';beginSit(true)}
+function startFeeding(){if(eating)return;if(standing){queuedFeed=true;return;}if(seatedRest){clearTimeout(sequenceTimer);rest.pause();seatedRest=false;eating=true;feed.disabled=true;throwToast();return;}if(holding)releaseHand();eating=true;feed.disabled=true;$('feed-label').textContent='Sitting first…';if(!sitting)beginSit(true)}
 feed.addEventListener('click',startFeeding);
 eat.addEventListener('ended',finishEating);
 for(const video of videos)video.addEventListener('error',()=>{if(video===holdLeft||video===holdRight)releaseHand();if(video===stand||video===rest){standing=false;resumeDefault();}if(video===eat||video===sit){if(eating)finishEating();else resumeDefault();}say('Couldn’t load the animation. Please refresh and try again.',10000)});
