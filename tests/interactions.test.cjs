@@ -73,7 +73,14 @@ for (const side of [-1, 1]) {
   const before = [marker.style.left, marker.style.top];
   a.run('holdTarget = {x: 10000, y: 10000}; updateHoldIndicator()');
   assert.deepEqual([marker.style.left, marker.style.top], before);
-  assert(parseFloat(marker.style.left) > 0 && parseFloat(marker.style.left) < 100);
+  for (const pointer of [{x:-10000,y:-10000},{x:10000,y:10000},{x:300,y:150}]) {
+    a.run(`holdPointer = ${JSON.stringify(pointer)}; updateHoldIndicator()`);
+    const points = a.run(`HOLD_HAND_ANCHORS[holdDirection < 0 ? 'left' : 'right'][18]`);
+    const dx = parseFloat(marker.style.left) - points[0] / 280 * 224;
+    const dy = parseFloat(marker.style.top) - points[1] / 350 * 280;
+    assert(Math.abs(Math.hypot(dx,dy) - 40) < .001);
+    assert(dx * side > 32, 'The icon stays outside the hand and body');
+  }
   a.fire('hold'); assert.equal(marker.hidden, true);
 }
-console.log('Passed: both Hold indicators track the hand, remain independent of pointer distance, and disappear on release.');
+console.log('Passed: both Hold indicators orbit outside the hand with a fixed gap, stay close at distant pointers, and disappear on release.');
