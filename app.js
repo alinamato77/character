@@ -324,11 +324,8 @@ $('hand-right').addEventListener('click', () => holdHand(1));
 $('pat').addEventListener('click', pat);
 $('feed').addEventListener('click', () => requestSeatedAction('feed'));
 $('hello').addEventListener('click', () => requestSeatedAction('hello'));
-const chatLines = ['What made you smile today?', 'Take a break if you’re tired. I’m here.', 'Do your thing. I’ll keep you company.', 'Toast crusts are tasty too.'];
-let lineIndex = 0;
 $('talk').addEventListener('click', () => {
-  if (['default', 'jump', 'walk', 'rest'].includes(state) && Math.random() < .45) requestSeatedAction('think');
-  say(chatLines[lineIndex++ % chatLines.length], 10000);
+  if ($('chat-panel').hidden !== false && ['default', 'jump', 'walk', 'rest'].includes(state) && Math.random() < .45) requestSeatedAction('think');
 });
 
 document.addEventListener('pointermove', e => {

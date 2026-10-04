@@ -109,3 +109,26 @@ body.holding-hand .controls, body.holding-hand .controls * { cursor: pointer !im
   .pet.patted, .pet.dropped, .heart, .tip.entering, .tip.leaving { animation: none; }
   .heart { display: none; }
 }
+
+/* Weekly conversation card. Answers stay in this page and are not stored. */
+.room.has-chat .bubble { visibility: hidden; }
+.chat-panel { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: min(420px,calc(100% - 32px)); z-index: 10; padding: 10px 14px 12px; border: 2px solid #8a6753; background: #fff9e9; box-shadow: 4px 4px 0 #cdb18a; font-size: 12px; animation: chat-appear .2s ease-out; }
+.chat-panel[hidden], .chat-panel [hidden], #chat-form[hidden] { display: none; }
+.chat-heading { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: #795a46; font-size: 10px; }
+.chat-panel h2 { margin: 6px 0 10px; font: inherit; font-size: 14px; line-height: 1.4; }
+.chat-panel h2:focus { outline: none; }
+.chat-panel button { min-height: 32px; padding: 5px 14px; border: 1px solid #8a6753; color: #533c35; background: #f2dfbd; box-shadow: 2px 2px 0 #cdb18a; }
+.chat-panel button:hover { background: #f9e9cd; }
+.chat-panel button:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 #cdb18a; }
+.chat-panel #chat-close { min-height: 28px; width: 28px; padding: 0; border: 0; box-shadow: none; background: transparent; font-size: 20px; }
+.chat-choices, #chat-form { display: flex; gap: 10px; }
+.chat-choices button { flex: 1; }
+#chat-answer { min-width: 0; width: 100%; border: 1px solid #8a6753; background: #fffdf6; padding: 7px 8px; color: #533c35; font: inherit; }
+#chat-answer:focus-visible { outline: 2px solid #c78244; outline-offset: 2px; }
+#chat-reply { margin: 0 0 10px; font-size: 12px; line-height: 1.5; }
+#chat-next { font-size: 11px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+body.holding-hand .chat-panel, body.holding-hand .chat-panel * { cursor: auto !important; }
+body.holding-hand .chat-panel button { cursor: pointer !important; }
+@keyframes chat-appear { from { opacity: 0; margin-top: -6px; } to { opacity: 1; margin-top: 0; } }
+@media (prefers-reduced-motion: reduce) { .chat-panel { animation: none; } }
