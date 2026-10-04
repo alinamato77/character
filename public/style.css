@@ -132,3 +132,8 @@ body.holding-hand .chat-panel, body.holding-hand .chat-panel * { cursor: auto !i
 body.holding-hand .chat-panel button { cursor: pointer !important; }
 @keyframes chat-appear { from { opacity: 0; margin-top: -6px; } to { opacity: 1; margin-top: 0; } }
 @media (prefers-reduced-motion: reduce) { .chat-panel { animation: none; } }
+
+.chat-privacy { font-size: 11px; line-height: 1.45; color: #795a46; margin: 0 0 10px; }
+#chat-send-status { font-size: 11px; line-height: 1.45; margin: 0 0 8px; }
+.chat-panel button:disabled { opacity: .6; cursor: wait; }
+.owner-inbox-link { display: block; width: max-content; margin: 8px auto; color: #795a46; font-size: 11px; text-underline-offset: 3px; }

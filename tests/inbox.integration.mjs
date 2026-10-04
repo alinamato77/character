@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+const base='http://127.0.0.1:4174';
+const root=await fetch(base); assert.equal(root.status,200);assert((await root.text()).includes('Creator inbox'));
+const anon=await fetch(base+'/inbox'); assert.equal(anon.status,200);assert((await anon.text()).includes('Sign in with ChatGPT'));assert.match(anon.headers.get('cache-control'),/no-store/);
+const session=await fetch(base+'/api/chat/session');assert.equal(session.status,200);const {csrf}=await session.json();const cookie=session.headers.get('set-cookie').split(';')[0];
+const payload={id:crypto.randomUUID(),week:0,index:0,answer:'Local inbox test: noodles for dinner.'};
+const headers={'Content-Type':'application/json',Origin:base,Cookie:cookie,'X-Bimba-CSRF':csrf};
+const post=(body,h=headers)=>fetch(base+'/api/chat/answers',{method:'POST',headers:h,body:JSON.stringify(body)});
+assert.equal((await post(payload,{...headers,Origin:'https://other.example'})).status,403);
+assert.equal((await post(payload,{...headers,'X-Bimba-CSRF':'wrong'})).status,403);
+assert.equal((await post({...payload,index:1,answer:'not a yes or no'})).status,400);
+assert.equal((await post({...payload,answer:' '.repeat(4)})).status,400);
+assert.equal((await post(payload)).status,201);
+assert.equal((await post(payload)).status,200,'Retry is idempotent');
+const stranger=await fetch(base+'/inbox',{headers:{'oai-authenticated-user-id':'test-stranger','oai-authenticated-user-email':'stranger@example.test'}});const strangerHtml=await stranger.text();assert(strangerHtml.includes('only available to the website owner'));assert(!strangerHtml.includes(payload.answer));
+const owner=await fetch(base+'/inbox',{headers:{'oai-authenticated-user-id':'test-owner','oai-authenticated-user-email':'owner@example.test'}});const html=await owner.text();assert(html.includes(payload.answer));assert(html.includes('What’s your dinner plan?') || html.includes('What&#x27;s your dinner plan?'));assert.match(owner.headers.get('cache-control'),/no-store/);
+console.log('Passed: public page; durable submit/readback; retry deduplication; invalid-answer and CSRF rejection; anonymous and non-owner privacy; owner inbox; private cache headers.');

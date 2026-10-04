@@ -2,7 +2,7 @@ const vm = require('node:vm');
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
-const source = fs.readFileSync(path.join(__dirname, '../dist/app.js'), 'utf8');
+const source = fs.readFileSync(path.join(__dirname, '../public/app.js'), 'utf8');
 function setup(random = .1) {
   const elements = new Map(), timers = new Map(), documentEvents = {};
   let now = 0, timerId = 0;
@@ -25,7 +25,7 @@ function setup(random = .1) {
   const context = { document: { hidden: false, body: element('body'), getElementById: element, createElement: tag => element(`${tag}-${elements.size}`), addEventListener(name, fn) { (documentEvents[name] ||= []).push(fn); } },
     window: { innerWidth: 1000, innerHeight: 800, addEventListener() {} }, requestAnimationFrame() {}, Math: math,
     setTimeout(fn, ms) { const id = ++timerId; timers.set(id, { at: now + ms, fn }); return id; }, clearTimeout(id) { timers.delete(id); }, Uint8Array, Int32Array };
-  vm.createContext(context); vm.runInContext(fs.readFileSync(path.join(__dirname, '../dist/assets/animations/hold-anchors.js'), 'utf8'), context); vm.runInContext(source, context);
+  vm.createContext(context); vm.runInContext(fs.readFileSync(path.join(__dirname, '../public/assets/animations/hold-anchors.js'), 'utf8'), context); vm.runInContext(source, context);
   const run = text => vm.runInContext(text, context);
   const fire = (id, event = 'click', data = {}) => (element(id).events[event] || []).forEach(fn => fn(data));
   const end = name => fire(`video-${name}`, 'ended');

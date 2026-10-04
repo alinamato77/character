@@ -1,10 +1,15 @@
 (() => {
   const get = id => document.getElementById(id);
   const panel = get('chat-panel'), talk = get('talk'), room = get('room');
-  let week = bimbaWeek(), index = 0, answered = false;
+  let week = bimbaWeek(), index = 0, answered = false, sending = false;
+  let submissionId = crypto.randomUUID();
+  const sendStatus = get('chat-send-status');
 
   function showQuestion() {
     answered = false;
+    submissionId = crypto.randomUUID();
+    sendStatus.hidden = true;
+    get('chat-privacy').hidden = false;
     const item = BIMBA_QUESTIONS[week][index];
     get('chat-progress').textContent = `Week ${week + 1} · ${index + 1} of 3`;
     get('chat-question').textContent = item.question;
@@ -18,16 +23,43 @@
   }
 
   function closeChat() {
+    if (sending) return;
     panel.hidden = true;
     room.classList.remove('has-chat');
     talk.setAttribute('aria-expanded', 'false');
     talk.focus({ preventScroll: true });
   }
 
-  function answer(choice) {
-    if (answered) return;
-    answered = true;
+  async function answer(choice) {
+    if (answered || sending) return;
+    sending = true;
+    const buttons = [get('chat-yes'), get('chat-no'), get('chat-close'), get('chat-form').querySelector('button')];
+    buttons.forEach(button => { button.disabled = true; });
+    get('chat-answer').readOnly = true;
+    sendStatus.textContent = 'Sending…';
+    sendStatus.hidden = false;
+    try {
+      const sessionResponse = await fetch('/api/chat/session', {cache:'no-store'});
+      const session = await sessionResponse.json();
+      if (!sessionResponse.ok || !session.csrf) throw new Error(session.error || 'Chat is temporarily unavailable. Please try again.');
+      const response = await fetch('/api/chat/answers', {
+        method:'POST', headers:{'Content-Type':'application/json','X-Bimba-CSRF':session.csrf},
+        body:JSON.stringify({id:submissionId,week,index,answer:choice || get('chat-answer').value.trim()})
+      });
+      const result = await response.json();
+      if (!response.ok || !result.saved) throw new Error(result.error || 'Your answer wasn’t confirmed. Please try again.');
+      answered = true;
+      sendStatus.textContent = 'Sent privately. Thank you!';
+    } catch (error) {
+      sendStatus.textContent = error instanceof Error ? error.message : 'Couldn’t send. Please try again.';
+      return;
+    } finally {
+      sending = false;
+      buttons.forEach(button => { button.disabled = false; });
+      get('chat-answer').readOnly = false;
+    }
     const item = BIMBA_QUESTIONS[week][index];
+    get('chat-privacy').hidden = true;
     get('chat-choices').hidden = true;
     get('chat-form').hidden = true;
     get('chat-reply').textContent = item.type === 'text' ? item.reply : item[choice];
@@ -57,7 +89,7 @@
       input.reportValidity();
       return;
     }
-    answer();
+    return answer();
   });
   get('chat-answer').addEventListener('input', () => get('chat-answer').setCustomValidity(''));
   get('chat-next').addEventListener('click', () => {

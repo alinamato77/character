@@ -15,6 +15,8 @@
       <section class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-question" hidden>
         <div class="chat-heading"><span id="chat-progress"></span><button id="chat-close" aria-label="Close chat">×</button></div>
         <h2 id="chat-question" tabindex="-1"></h2>
+        <p class="chat-privacy" id="chat-privacy">Your answer is sent privately to bimba’s creator. No name needed.</p>
+        <p id="chat-send-status" role="status" aria-live="polite" hidden></p>
         <div class="chat-choices" id="chat-choices"><button id="chat-yes">Yes</button><button id="chat-no">No</button></div>
         <form id="chat-form" hidden><label class="sr-only" for="chat-answer">Your answer</label><input id="chat-answer" placeholder="Tell me…" maxlength="240" autocomplete="off" required><button type="submit">Send</button></form>
         <p id="chat-reply" role="status" aria-live="polite" hidden></p>
@@ -53,6 +55,7 @@
       </div>
       <button id="tips-pause" class="tips-pause" aria-label="Pause interaction tips" aria-pressed="false"><span aria-hidden="true">Ⅱ</span></button>
     </footer>
+    <a class="owner-inbox-link" href="/inbox">Creator inbox</a>
   </main>
   <video id="video-default" src="assets/animations/default.mp4" muted playsinline loop preload="auto" hidden></video>
   <video id="video-jump" src="assets/animations/jump.mp4" muted playsinline loop preload="auto" hidden></video>
