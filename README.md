@@ -6,6 +6,7 @@ A small pixel companion. The live address remains https://small-a-companion.wxie
 
 - `dist/`: the complete, publishable website. The desktop copy has these files at its root.
 - `dist/app.js`: named action states, transitions, pointer interactions, and character rendering.
+- `dist/questions.js` and `dist/chat.js`: 12 questions in a four-week cycle and the Yes/No or text-answer conversation card.
 - `dist/tips.js`: the five-second footer tip carousel.
 - `dist/style.css`: the pixel room, buttons, cursors, and responsive layout.
 - `dist/assets/animations/`: website-ready clips, the action manifest, and sizing measurements.
@@ -23,7 +24,7 @@ A small pixel companion. The live address remains https://small-a-companion.wxie
 - Pet: the existing animation and 2.6-second interaction, unchanged.
 - Hold: the existing left/right clips, one-second hand raise, cursor-following movement, repeat from one second, and click/boundary release, unchanged.
 - Hello: sit down if needed → seated wave → stand up → default.
-- Chat: each eligible click has a 45% chance of sit → finger/thinking → stand; otherwise only the dialogue changes. Chat never interrupts feeding, greeting, Pet, or Hold.
+- Chat: one click opens a question card. Three questions per week rotate through four sets, starting October 4, 2026 (visitor local calendar date) and repeating every four weeks. Text answers are not persisted or sent anywhere. Eligible opens retain the 45% chance of sit → finger/thinking → stand. Chat never interrupts feeding, greeting, Pet, or Hold.
 
 A new seated action is queued during another seated action or the stand-up transition, avoiding overlapping playback. All rendered frames use a 280 × 350 canvas and a common face-size reference and ground line. Pet and both Hold clip files retain their pre-update bytes. Very short blends soften switches between other clips.
 

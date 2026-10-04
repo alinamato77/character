@@ -12,6 +12,14 @@
   <main>
     <header><a class="brand" href="./">bimba</a><span class="edition">Can you play with me?</span></header>
     <section class="room" id="room" aria-label="Companion play area">
+      <section class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-question" hidden>
+        <div class="chat-heading"><span id="chat-progress"></span><button id="chat-close" aria-label="Close chat">×</button></div>
+        <h2 id="chat-question" tabindex="-1"></h2>
+        <div class="chat-choices" id="chat-choices"><button id="chat-yes">Yes</button><button id="chat-no">No</button></div>
+        <form id="chat-form" hidden><label class="sr-only" for="chat-answer">Your answer</label><input id="chat-answer" placeholder="Tell me…" maxlength="240" autocomplete="off" required><button type="submit">Send</button></form>
+        <p id="chat-reply" role="status" aria-live="polite" hidden></p>
+        <button id="chat-next" hidden>Next question</button>
+      </section>
       <div class="pet" id="pet">
         <div class="bubble" id="bubble" role="status" aria-live="polite">Hi, I’m here.</div>
         <button class="character" id="character" aria-label="Pet bimba or drag her to move">
@@ -29,7 +37,7 @@
           <button id="pat" class="pixel-action" aria-label="Pet"><img src="assets/icons/button-heart.svg" alt="" draggable="false"><span>Pet</span></button>
           <button id="feed" class="pixel-action" aria-label="Feed"><img src="assets/icons/button-toast.png" alt="" draggable="false"><span id="feed-label">Feed</span></button>
           <button id="hello" class="pixel-action" aria-label="Say hello"><img src="assets/icons/button-hand.png" alt="" draggable="false"><span>Hello</span></button>
-          <button id="talk" class="pixel-action" aria-label="Chat"><img src="assets/icons/button-bubble.png" alt="" draggable="false"><span>Chat</span></button>
+          <button id="talk" class="pixel-action" aria-label="Chat" aria-controls="chat-panel" aria-expanded="false"><img src="assets/icons/button-bubble.png" alt="" draggable="false"><span>Chat</span></button>
         </div>
       </div>
     </section>
@@ -41,7 +49,7 @@
         <p class="hint tip" hidden>Hold her hand and move your cursor to walk together.</p>
         <p class="hint tip" hidden>Click again while holding hands to let go.</p>
         <p class="hint tip" hidden>Click Hello to share a little wave.</p>
-        <p class="hint tip" hidden>Click Chat and she might pause for a little thought.</p>
+        <p class="hint tip" hidden>Click Chat to answer this week’s three questions.</p>
       </div>
       <button id="tips-pause" class="tips-pause" aria-label="Pause interaction tips" aria-pressed="false"><span aria-hidden="true">Ⅱ</span></button>
     </footer>
@@ -61,6 +69,8 @@
   <video id="video-hold-right" src="assets/animations/hold-right.mp4" muted playsinline preload="auto" hidden></video>
   <script src="assets/animations/hold-anchors.js"></script>
   <script src="app.js"></script>
+  <script src="questions.js"></script>
+  <script src="chat.js"></script>
   <script src="tips.js"></script>
 </body>
 </html>
