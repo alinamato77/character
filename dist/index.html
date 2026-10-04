@@ -19,6 +19,7 @@
         </button>
         <button class="hand-zone hand-left" id="hand-left" aria-label="Hold hands and walk left"></button>
         <button class="hand-zone hand-right" id="hand-right" aria-label="Hold hands and walk right"></button>
+        <img id="hold-indicator" class="hold-indicator" src="assets/cursors/cursor-hold.svg" alt="" aria-hidden="true" draggable="false" hidden>
         <div id="particles" aria-hidden="true"></div>
       </div>
       <div class="companion-toolbar">
@@ -58,6 +59,7 @@
   <video id="video-think" src="assets/animations/think.mp4" muted playsinline preload="auto" hidden></video>
   <video id="video-hold-left" src="assets/animations/hold-left.mp4" muted playsinline preload="auto" hidden></video>
   <video id="video-hold-right" src="assets/animations/hold-right.mp4" muted playsinline preload="auto" hidden></video>
+  <script src="assets/animations/hold-anchors.js"></script>
   <script src="app.js"></script>
   <script src="tips.js"></script>
 </body>

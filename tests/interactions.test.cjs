@@ -25,7 +25,7 @@ function setup(random = .1) {
   const context = { document: { hidden: false, body: element('body'), getElementById: element, createElement: tag => element(`${tag}-${elements.size}`), addEventListener(name, fn) { (documentEvents[name] ||= []).push(fn); } },
     window: { innerWidth: 1000, innerHeight: 800, addEventListener() {} }, requestAnimationFrame() {}, Math: math,
     setTimeout(fn, ms) { const id = ++timerId; timers.set(id, { at: now + ms, fn }); return id; }, clearTimeout(id) { timers.delete(id); }, Uint8Array, Int32Array };
-  vm.createContext(context); vm.runInContext(source, context);
+  vm.createContext(context); vm.runInContext(fs.readFileSync(path.join(__dirname, '../dist/assets/animations/hold-anchors.js'), 'utf8'), context); vm.runInContext(source, context);
   const run = text => vm.runInContext(text, context);
   const fire = (id, event = 'click', data = {}) => (element(id).events[event] || []).forEach(fn => fn(data));
   const end = name => fire(`video-${name}`, 'ended');
@@ -65,3 +65,15 @@ function setup(random = .1) {
   const b = setup(); b.fire('character','pointerdown',e); b.fire('character','pointermove',{...e,clientX:450}); b.fire('character','pointerup',{...e,clientX:450}); assert.equal(b.state(),'default');
 }
 console.log('Passed: default/rest cycle; sit/feed/eat/stand; Hello and queued actions; random Chat thinking; unchanged Pet timing and Hold lead-in/loop; face feeding and dragging.');
+
+for (const side of [-1, 1]) {
+  const a = setup(); a.run(`holdHand(${side}); active.currentTime = 1.5; updateHoldIndicator()`);
+  const marker = a.element('hold-indicator');
+  assert.equal(marker.hidden, false);
+  const before = [marker.style.left, marker.style.top];
+  a.run('holdTarget = {x: 10000, y: 10000}; updateHoldIndicator()');
+  assert.deepEqual([marker.style.left, marker.style.top], before);
+  assert(parseFloat(marker.style.left) > 0 && parseFloat(marker.style.left) < 100);
+  a.fire('hold'); assert.equal(marker.hidden, true);
+}
+console.log('Passed: both Hold indicators track the hand, remain independent of pointer distance, and disappear on release.');

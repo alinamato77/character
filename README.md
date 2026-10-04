@@ -30,3 +30,5 @@ A new seated action is queued during another seated action or the stand-up trans
 ## Updating videos
 
 Place originals in `source-assets/animations/`. Process new website copies into `assets/animations/` (under `dist/` in this repository), preserving aspect ratio and matching head size, rather than stretching every pose to the same total height. Update `manifest.json` for renamed or new actions. Do not replace a processed clip with a widescreen original; that would stretch it in the shared canvas. Keep the original Pet and Hold playback copies unless explicitly asked to change them.
+
+The Hold cursor uses the clasped-hands icon on both hand hotspots. While holding, a display-only indicator follows sampled hand positions in `assets/animations/hold-anchors.js`; pointer targets and movement behavior remain independent of the indicator.
