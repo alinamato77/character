@@ -62,7 +62,7 @@ canvas { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 body.holding-hand, body.holding-hand * { cursor: url('assets/cursors/cursor-hand.png') 16 16,pointer !important; }
 .character.cursor-heart { cursor: url('assets/cursors/cursor-heart.svg') 16 16,pointer; }
 .character.cursor-toast { cursor: url('assets/cursors/cursor-toast.png') 16 16,pointer; }
-.companion-toolbar { position: absolute; left: 36px; right: 36px; bottom: 24px; display: flex; justify-content: flex-end; }
+.companion-toolbar { position: absolute; left: 36px; right: 36px; bottom: 24px; display: flex; justify-content: center; }
 .controls { display: flex; gap: 6px; }
 .pixel-action { width: 70px; min-height: 82px; flex: 0 0 70px; padding: 0 2px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 5px; color: #493024; transition: transform .12s; }
 .pixel-action img { display: block; width: 56px; height: 56px; object-fit: contain; image-rendering: pixelated; pointer-events: none; }
