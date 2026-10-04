@@ -41,6 +41,7 @@ function updateControls() {
   $('feed-label').textContent = state === 'feeding' ? 'Feeding…' : state === 'eating' ? 'Eating…' : 'Feed';
   $('hello').disabled = state === 'hello';
   $('state').textContent = state;
+  updateHoldIndicator();
 }
 
 function say(text, duration = 6000) {
@@ -216,6 +217,21 @@ function position(x, y) {
   pet.style.top = Math.max(65, Math.min(y, room.clientHeight - pet.offsetHeight - 140)) + 'px';
 }
 
+// Display-only tracking. Pointer targets, movement speed, and click behavior are unchanged.
+function updateHoldIndicator() {
+  const indicator = $('hold-indicator');
+  indicator.hidden = state !== 'holding';
+  if (indicator.hidden) return;
+  const points = HOLD_HAND_ANCHORS[holdDirection < 0 ? 'left' : 'right'];
+  const sample = Math.max(0, Math.min(active.currentTime * HOLD_HAND_ANCHORS.fps, points.length - 1));
+  const index = Math.floor(sample), fraction = sample - index;
+  const a = points[index], b = points[Math.min(index + 1, points.length - 1)];
+  const x = a[0] + (b[0] - a[0]) * fraction;
+  const y = a[1] + (b[1] - a[1]) * fraction;
+  indicator.style.left = `${x / W * 100}%`;
+  indicator.style.top = `${y / H * 100}%`;
+}
+
 function moveCharacter(timestamp) {
   const dt = lastFrame ? Math.min((timestamp - lastFrame) / 1000, .05) : 0;
   lastFrame = timestamp;
@@ -278,6 +294,7 @@ function removeBackground(frame) {
 
 function render(timestamp = 0) {
   moveCharacter(timestamp);
+  updateHoldIndicator();
   if (active.readyState >= 2 && !active.seeking) {
     try {
       currentCtx.drawImage(active, 0, 0, W, H);

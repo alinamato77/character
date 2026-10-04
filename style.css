@@ -55,11 +55,14 @@ canvas { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 .pet.patted { animation: bounce .5s ease; }
 .pet.dropped { animation: land .4s ease; }
 .heart { position: absolute; left: 50%; top: 35%; color: #f05586; font-size: 26px; animation: float 1s ease-out forwards; pointer-events: none; }
-.hand-zone { position: absolute; top: 40%; width: 25%; height: 34%; border: 0; background: transparent; z-index: 4; cursor: url('assets/cursors/cursor-hand.png') 16 16,pointer; }
+.hand-zone { position: absolute; top: 40%; width: 25%; height: 34%; border: 0; background: transparent; z-index: 4; cursor: url('assets/cursors/cursor-hold.svg') 16 16,pointer; }
 .hand-left { left: 4%; }
 .hand-right { right: 4%; }
 .hand-zone:focus-visible { outline: 2px dashed #ff9b37; }
-body.holding-hand, body.holding-hand * { cursor: url('assets/cursors/cursor-hand.png') 16 16,pointer !important; }
+body.holding-hand .room, body.holding-hand .room * { cursor: none !important; }
+body.holding-hand .controls, body.holding-hand .controls * { cursor: pointer !important; }
+.hold-indicator { position: absolute; width: 32px; height: 32px; transform: translate(-50%, -50%); image-rendering: pixelated; pointer-events: none; user-select: none; z-index: 6; }
+.hold-indicator[hidden] { display: none; }
 .character.cursor-heart { cursor: url('assets/cursors/cursor-heart.svg') 16 16,pointer; }
 .character.cursor-toast { cursor: url('assets/cursors/cursor-toast.png') 16 16,pointer; }
 .companion-toolbar { position: absolute; left: 36px; right: 36px; bottom: 24px; display: flex; justify-content: center; }
