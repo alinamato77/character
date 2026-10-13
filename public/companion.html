@@ -16,6 +16,7 @@
         <div class="chat-heading"><span id="chat-progress"></span><button id="chat-close" aria-label="Close chat">×</button></div>
         <h2 id="chat-question" tabindex="-1"></h2>
         <p class="chat-privacy" id="chat-privacy">Your answer is sent privately to bimba’s creator. No name needed.</p>
+        <div id="chat-name-field"><label for="chat-name">Your name (optional)</label><input id="chat-name" maxlength="40" autocomplete="nickname" placeholder="Leave blank to stay anonymous"></div>
         <p id="chat-send-status" role="status" aria-live="polite" hidden></p>
         <div class="chat-choices" id="chat-choices"><button id="chat-yes">Yes</button><button id="chat-no">No</button></div>
         <form id="chat-form" hidden><label class="sr-only" for="chat-answer">Your answer</label><input id="chat-answer" placeholder="Tell me…" maxlength="240" autocomplete="off" required><button type="submit">Send</button></form>

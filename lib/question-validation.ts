@@ -9,5 +9,7 @@ export function validateAnswer(body: unknown) {
   if (!q || typeof b.answer !== 'string') return null;
   const answer=b.answer.trim();
   if (!answer || answer.length>240 || (q.type==='choice' && !['yes','no'].includes(answer))) return null;
-  return {id:b.id,week,index,question:q.question,type:q.type,answer};
+  if (b.name !== undefined && (typeof b.name !== 'string' || b.name.trim().length>40)) return null;
+  const name=typeof b.name==='string' ? b.name.trim() : '';
+  return {id:b.id,week,index,question:q.question,type:q.type,answer,name};
 }

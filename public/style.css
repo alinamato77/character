@@ -137,3 +137,5 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
 #chat-send-status { font-size: 11px; line-height: 1.45; margin: 0 0 8px; }
 .chat-panel button:disabled { opacity: .6; cursor: wait; }
 .owner-inbox-link { display: block; width: max-content; margin: 8px auto; color: #795a46; font-size: 11px; text-underline-offset: 3px; }
+
+#chat-name-field{margin:0 0 10px;font-size:11px}#chat-name-field label{display:block;margin-bottom:4px}#chat-name{font:inherit;width:100%;padding:6px 8px;background:#fffdf6;color:#533c35;border:1px solid #8a6753}#chat-name:focus-visible{outline:2px solid #c78244;outline-offset:2px}

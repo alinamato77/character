@@ -10,6 +10,7 @@
     submissionId = crypto.randomUUID();
     sendStatus.hidden = true;
     get('chat-privacy').hidden = false;
+    get('chat-name-field').hidden = false;
     const item = BIMBA_QUESTIONS[week][index];
     get('chat-progress').textContent = `Week ${week + 1} · ${index + 1} of 3`;
     get('chat-question').textContent = item.question;
@@ -36,6 +37,7 @@
     const buttons = [get('chat-yes'), get('chat-no'), get('chat-close'), get('chat-form').querySelector('button')];
     buttons.forEach(button => { button.disabled = true; });
     get('chat-answer').readOnly = true;
+    get('chat-name').readOnly = true;
     sendStatus.textContent = 'Sending…';
     sendStatus.hidden = false;
     try {
@@ -44,7 +46,7 @@
       if (!sessionResponse.ok || !session.csrf) throw new Error(session.error || 'Chat is temporarily unavailable. Please try again.');
       const response = await fetch('/api/chat/answers', {
         method:'POST', headers:{'Content-Type':'application/json','X-Bimba-CSRF':session.csrf},
-        body:JSON.stringify({id:submissionId,week,index,answer:choice || get('chat-answer').value.trim()})
+        body:JSON.stringify({id:submissionId,week,index,name:get('chat-name').value.trim(),answer:choice || get('chat-answer').value.trim()})
       });
       const result = await response.json();
       if (!response.ok || !result.saved) throw new Error(result.error || 'Your answer wasn’t confirmed. Please try again.');
@@ -57,9 +59,11 @@
       sending = false;
       buttons.forEach(button => { button.disabled = false; });
       get('chat-answer').readOnly = false;
+      get('chat-name').readOnly = false;
     }
     const item = BIMBA_QUESTIONS[week][index];
     get('chat-privacy').hidden = true;
+    get('chat-name-field').hidden = true;
     get('chat-choices').hidden = true;
     get('chat-form').hidden = true;
     get('chat-reply').textContent = item.type === 'text' ? item.reply : item[choice];

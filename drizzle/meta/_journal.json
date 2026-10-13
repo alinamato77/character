@@ -8,6 +8,13 @@
       "when": 1791144519479,
       "tag": "0000_clear_vengeance",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1791925642370,
+      "tag": "0001_boring_franklin_richards",
+      "breakpoints": true
     }
   ]
 }

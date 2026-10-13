@@ -40,11 +40,10 @@ GitHub publishing preference: do not push to GitHub unless the user explicitly r
 
 ## Private answer inbox
 
-- `/inbox` is rendered on the server and only shows records when dispatch-authenticated identity matches the owner email stored in the secret `INBOX_OWNER_EMAIL` environment variable. Anonymous and other signed-in users see no records. Responses are private/no-store.
-- Owner sign-in uses the platform `/signin-with-chatgpt` flow. The public companion remains accessible without sign-in.
-- `app/api/chat/session` creates a short-lived anonymous session with an HttpOnly cookie and CSRF token. `app/api/chat/answers` validates same-origin POSTs, session token, allowed questions, answer length/type, and submission IDs before saving. The server derives question text from its own question list.
-- `db/schema.ts` and generated `drizzle/` migrations define durable answers and temporary visitor sessions. Applied migrations must never be rewritten.
-- Retrying a submission reuses its ID to avoid duplicate records. Failed saves preserve visitor input. No email delivery or two-way replies are implemented.
-- The inbox shows question, answer, anonymous visitor label, and Pacific timestamp; it paginates 30 answers at a time.
-- Build: `npm run build`. Tests: `node tests/interactions.test.cjs`, `node tests/chat.test.cjs`, and the local Worker/database integration in `tests/inbox.integration.mjs` (port 4174, test-only owner identity).
+- `/inbox` uses a server-side access code stored only in secret `INBOX_ACCESS_CODE`. `INBOX_RATE_SALT` salts rate-limit keys. Anyone with the code can read messages.
+- Unlock sessions expire after two hours and use Secure, HttpOnly, SameSite cookies. Lock inbox revokes the session. Unlock attempts are limited to five per network and 100 globally per 15 minutes. Responses are private/no-store.
+- Chat submissions require an anonymous session, CSRF token, same-origin request, validated question and answer, and deduplicated submission ID.
+- Names are optional, visitor-provided, and limited to 40 characters; old or unnamed answers remain anonymous. The inbox shows the question, answer, name or anonymous label, and Pacific timestamp, with 30 records per page.
+- Durable answers and temporary sessions use D1. Applied migrations in `drizzle/` must never be rewritten. Failed saves preserve visitor input. Email delivery and two-way replies are not implemented.
+- Build: `npm run build`. Tests: `node tests/interactions.test.cjs`, `node tests/chat.test.cjs`, and `tests/inbox.integration.mjs` against a local Worker with test-only secrets.
 - `lib/question-data.ts` mirrors the public question list for validation; keep them synchronized.

@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     // Bound submissions per anonymous session; retries reuse the same record ID.
     const count=await db.prepare('SELECT COUNT(*) AS count FROM answers WHERE session_id = ? AND created_at > ?').bind(session.id,Date.now()-3600000).first<{count:number}>();
     if ((count?.count || 0)>=30) return json({error:'You’ve shared lots today. Please try again in an hour.'},429);
-    await db.prepare('INSERT INTO answers (id, session_id, visitor, week, question_index, question, answer_type, answer, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING').bind(entry.id,session.id,session.tag,entry.week+1,entry.index,entry.question,entry.type,entry.answer,Date.now()).run();
+    await db.prepare('INSERT INTO answers (id, session_id, visitor, visitor_name, week, question_index, question, answer_type, answer, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING').bind(entry.id,session.id,session.tag,entry.name || null,entry.week+1,entry.index,entry.question,entry.type,entry.answer,Date.now()).run();
     return json({saved:true},201);
   } catch { return json({error:'Your answer wasn’t confirmed. Please try again; your text is still here.'},503); }
 }
