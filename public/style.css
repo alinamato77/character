@@ -139,3 +139,7 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
 .owner-inbox-link { display: block; width: max-content; margin: 8px auto; color: #795a46; font-size: 11px; text-underline-offset: 3px; }
 
 #chat-name-field{margin:0 0 10px;font-size:11px}#chat-name-field label{display:block;margin-bottom:4px}#chat-name{font:inherit;width:100%;padding:6px 8px;background:#fffdf6;color:#533c35;border:1px solid #8a6753}#chat-name:focus-visible{outline:2px solid #c78244;outline-offset:2px}
+
+#chat-announcement { font-size: 15px; line-height: 1.65; white-space: pre-line; margin: 8px 0 16px; }
+#chat-skip { margin-top: 10px; background: transparent; box-shadow: none; font-size: 11px; }
+.chat-panel { max-height: calc(100% - 24px); overflow-y: auto; }

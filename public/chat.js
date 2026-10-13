@@ -1,7 +1,9 @@
+import { chatContent } from './chat-content.js';
 (() => {
   const get = id => document.getElementById(id);
   const panel = get('chat-panel'), talk = get('talk'), room = get('room');
-  let week = bimbaWeek(), index = 0, answered = false, sending = false;
+  let index = -1, answered = false, sending = false;
+  const current = () => chatContent.conversation[index];
   let submissionId = crypto.randomUUID();
   const sendStatus = get('chat-send-status');
 
@@ -9,17 +11,22 @@
     answered = false;
     submissionId = crypto.randomUUID();
     sendStatus.hidden = true;
-    get('chat-privacy').hidden = false;
-    get('chat-name-field').hidden = false;
-    const item = BIMBA_QUESTIONS[week][index];
-    get('chat-progress').textContent = `Week ${week + 1} · ${index + 1} of 3`;
-    get('chat-question').textContent = item.question;
-    get('chat-choices').hidden = item.type !== 'choice';
-    get('chat-form').hidden = item.type !== 'text';
+    const item = current();
+    const isQuestion = item && ['text', 'choice'].includes(item.type);
+    get('chat-announcement').textContent = chatContent.announcement;
+    get('chat-announcement').hidden = index !== -1;
+    get('chat-progress').textContent = index === -1 ? 'A note from me · This week' : (isQuestion ? item.topic : 'A little company');
+    get('chat-question').textContent = index === -1 ? 'Hey, you.' : item.text;
+    get('chat-privacy').hidden = !isQuestion;
+    get('chat-name-field').hidden = !isQuestion;
+    get('chat-choices').hidden = !isQuestion || item.type !== 'choice';
+    get('chat-form').hidden = !isQuestion || item.type !== 'text';
     get('chat-answer').value = '';
     get('chat-answer').setCustomValidity('');
     get('chat-reply').hidden = true;
-    get('chat-next').hidden = true;
+    get('chat-next').hidden = !!isQuestion;
+    get('chat-next').textContent = index === -1 ? chatContent.openingButton : (item.button || 'Keep chatting');
+    get('chat-skip').hidden = !isQuestion;
     get('chat-question').focus({ preventScroll: true });
   }
 
@@ -32,9 +39,9 @@
   }
 
   async function answer(choice) {
-    if (answered || sending) return;
+    if (answered || sending || !current() || !['text','choice'].includes(current().type)) return;
     sending = true;
-    const buttons = [get('chat-yes'), get('chat-no'), get('chat-close'), get('chat-form').querySelector('button')];
+    const buttons = [get('chat-yes'), get('chat-no'), get('chat-close'), get('chat-form').querySelector('button'), get('chat-skip')];
     buttons.forEach(button => { button.disabled = true; });
     get('chat-answer').readOnly = true;
     get('chat-name').readOnly = true;
@@ -46,7 +53,7 @@
       if (!sessionResponse.ok || !session.csrf) throw new Error(session.error || 'Chat is temporarily unavailable. Please try again.');
       const response = await fetch('/api/chat/answers', {
         method:'POST', headers:{'Content-Type':'application/json','X-Bimba-CSRF':session.csrf},
-        body:JSON.stringify({id:submissionId,week,index,name:get('chat-name').value.trim(),answer:choice || get('chat-answer').value.trim()})
+        body:JSON.stringify({id:submissionId,edition:chatContent.edition,questionId:current().id,name:get('chat-name').value.trim(),answer:choice || get('chat-answer').value.trim()})
       });
       const result = await response.json();
       if (!response.ok || !result.saved) throw new Error(result.error || 'Your answer wasn’t confirmed. Please try again.');
@@ -61,22 +68,22 @@
       get('chat-answer').readOnly = false;
       get('chat-name').readOnly = false;
     }
-    const item = BIMBA_QUESTIONS[week][index];
+    const item = current();
     get('chat-privacy').hidden = true;
     get('chat-name-field').hidden = true;
     get('chat-choices').hidden = true;
     get('chat-form').hidden = true;
     get('chat-reply').textContent = item.type === 'text' ? item.reply : item[choice];
     get('chat-reply').hidden = false;
-    get('chat-next').textContent = index === 2 ? 'Done for now' : 'Next question';
+    get('chat-skip').hidden = true;
+    get('chat-next').textContent = 'Keep chatting';
     get('chat-next').hidden = false;
     get('chat-next').focus({ preventScroll: true });
   }
 
   talk.addEventListener('click', () => {
     if (!panel.hidden) { get('chat-question').focus({ preventScroll: true }); return; }
-    const currentWeek = bimbaWeek();
-    if (currentWeek !== week) { week = currentWeek; index = 0; }
+    index = -1;
     panel.hidden = false;
     room.classList.add('has-chat');
     talk.setAttribute('aria-expanded', 'true');
@@ -96,10 +103,16 @@
     return answer();
   });
   get('chat-answer').addEventListener('input', () => get('chat-answer').setCustomValidity(''));
+  function advance() {
+    if (sending) return;
+    if (index >= chatContent.conversation.length - 1) { closeChat(); return; }
+    index++;
+    showQuestion();
+  }
   get('chat-next').addEventListener('click', () => {
-    if (!answered) return;
-    if (index === 2) { index = 0; closeChat(); } else { index++; showQuestion(); }
+    if (index === -1 || current().type === 'chat' || answered) advance();
   });
+  get('chat-skip').addEventListener('click', advance);
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && !panel.hidden) { event.preventDefault(); closeChat(); }
   });

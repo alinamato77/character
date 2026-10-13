@@ -1,4 +1,5 @@
 import { answerDb, getSession, json } from '../../../../lib/answer-store';
+import { chatContent } from '../../../../public/chat-content.js';
 import { validateAnswer } from '../../../../lib/question-validation';
 export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
@@ -8,6 +9,7 @@ export async function POST(request: Request) {
     const raw=await request.text();
     if (raw.length>2048) return json({error:'Your answer is too long.'},413);
     let body; try {body=JSON.parse(raw);} catch {return json({error:'Please check your answer.'},400);}
+    if (body && body.edition !== chatContent.edition) return json({error:'Chat has been updated. Copy your answer, then refresh the page to see the latest questions.'},409);
     const entry=validateAnswer(body);
     if (!entry) return json({error:'Please check your answer (up to 240 characters).'},400);
     const session=await getSession(request);
