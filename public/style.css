@@ -151,4 +151,14 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
 
 .announcement-letter { flex: 1; min-width: 0; }
 #chat-signature { margin: 14px 0 0; text-align: right; font-size: 14px; line-height: 1.65; }
-.chat-panel[data-view="announcement"] #chat-next { display: block; width: fit-content; margin: 0 auto; font-weight: 700; }
+/* Announcement call to action: fixed double-width, responsive on narrow screens. */
+.chat-panel[data-view="announcement"] #chat-next { display: block; width: 224px; max-width: 100%; min-height: 44px; margin: 0 auto; padding: 10px 16px; font-size: 16px; font-weight: 700; font-synthesis: weight; line-height: 1.35; border: 2px solid #8a6753; box-shadow: 3px 3px 0 #cdb18a; cursor: pointer; transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease; }
+@media (hover: hover) {
+  .chat-panel[data-view="announcement"] #chat-next:hover { background: #ffe6b0; transform: translateY(-2px); box-shadow: 3px 5px 0 #b9946c; }
+}
+.chat-panel[data-view="announcement"] #chat-next:focus-visible { outline: 3px solid #875538; outline-offset: 4px; background: #ffe6b0; }
+.chat-panel[data-view="announcement"] #chat-next:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 #cdb18a; }
+@media (prefers-reduced-motion: reduce) {
+  .chat-panel[data-view="announcement"] #chat-next { transition: none; }
+  .chat-panel[data-view="announcement"] #chat-next:hover, .chat-panel[data-view="announcement"] #chat-next:active { transform: none; }
+}
