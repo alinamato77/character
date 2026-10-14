@@ -167,3 +167,6 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
 .chat-panel[data-view="announcement"] { padding: 16px 18px 20px; }
 .chat-panel[data-view="announcement"] .chat-heading { margin-bottom: 24px; }
 .chat-panel[data-view="announcement"] #chat-announcement { margin-bottom: 24px; }
+
+/* Hidden announcement must win over its flex layout during questions. */
+#chat-announcement[hidden] { display: none; }
