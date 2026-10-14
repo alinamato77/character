@@ -4,7 +4,7 @@
 // Keep question IDs unique. type: 'chat' is NEVER saved; 'text' / 'choice' answers are saved.
 export const chatContent = {
   edition: '2026-10-13',
-  announcement: 'Good morning afternoon evening,\n....',
+  announcement: "Good morning afternoon evening,\nthis week is so cold!! I don't want to leave my room. But if you ask, I would be happy.. to.. go....",
   signature: 'alina',
   openingButton: 'How about you?',
   // Conversation order: mix little companion moments with questions.
