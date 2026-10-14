@@ -148,3 +148,7 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
 #chat-announcement { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; }
 #chat-announcement-text { flex: 1; min-width: 0; margin: 0; color: #65412c; font-size: 14px; line-height: 1.65; white-space: pre-line; overflow-wrap: anywhere; }
 .announcement-note { display: block; flex: 0 0 auto; width: 120px; max-width: 32%; height: auto; object-fit: contain; image-rendering: pixelated; }
+
+.announcement-letter { flex: 1; min-width: 0; }
+#chat-signature { margin: 14px 0 0; text-align: right; font-size: 14px; line-height: 1.65; }
+.chat-panel[data-view="announcement"] #chat-next { display: block; width: fit-content; margin: 0 auto; font-weight: 700; }

@@ -15,9 +15,12 @@ import { chatContent } from './chat-content.js';
     const isQuestion = item && ['text', 'choice'].includes(item.type);
     panel.setAttribute('data-view', index === -1 ? 'announcement' : 'conversation');
     get('chat-announcement-text').textContent = chatContent.announcement;
+    get('chat-signature').textContent = chatContent.signature;
+    panel.setAttribute('aria-labelledby', index === -1 ? 'chat-progress' : 'chat-question');
     get('chat-announcement').hidden = index !== -1;
     get('chat-progress').textContent = index === -1 ? 'A note from me · This week' : (isQuestion ? item.topic : 'A little company');
-    get('chat-question').textContent = index === -1 ? 'Hey, you.' : item.text;
+    get('chat-question').hidden = index === -1;
+    get('chat-question').textContent = index === -1 ? '' : item.text;
     get('chat-name-field').hidden = !isQuestion;
     get('chat-choices').hidden = !isQuestion || item.type !== 'choice';
     get('chat-form').hidden = !isQuestion || item.type !== 'text';
@@ -27,7 +30,7 @@ import { chatContent } from './chat-content.js';
     get('chat-next').hidden = !!isQuestion;
     get('chat-next').textContent = index === -1 ? chatContent.openingButton : (item.button || 'Keep chatting');
     get('chat-skip').hidden = !isQuestion;
-    get('chat-question').focus({ preventScroll: true });
+    get(index === -1 ? 'chat-next' : 'chat-question').focus({ preventScroll: true });
   }
 
   function closeChat() {
@@ -81,7 +84,7 @@ import { chatContent } from './chat-content.js';
   }
 
   talk.addEventListener('click', () => {
-    if (!panel.hidden) { get('chat-question').focus({ preventScroll: true }); return; }
+    if (!panel.hidden) { get(index === -1 ? 'chat-next' : 'chat-question').focus({ preventScroll: true }); return; }
     index = -1;
     panel.hidden = false;
     room.classList.add('has-chat');
