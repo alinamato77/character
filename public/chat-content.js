@@ -27,6 +27,6 @@ export const chatContent = {
     { id: 'weekend', type: 'text', topic: 'Your weekend',
       text: 'What’s your weekend plan—or what would you love to do?',
       reply: 'I hope your weekend has something that feels good to you, even if it’s simply doing less.' },
-    { type: 'chat', text: 'Thanks for spending a little time with me. Come back whenever you feel like it.', button: 'Back to bimba' }
+    { type: 'chat', text: 'Thanks for spending a little time with me. Come back whenever you feel like it.', button: 'Back to Q.alina' }
   ]
 };

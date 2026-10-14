@@ -4,20 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f9efd9">
-  <meta name="description" content="Meet bimba, your cozy pixel companion. Hold hands, share toast, and spend a little time together.">
-  <title>bimba — Can you play with me?</title>
+  <meta name="description" content="Meet Q.alina, your cozy pixel companion. Hold hands, share toast, and spend a little time together.">
+  <title>Q.alina — Stay with me</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main>
-    <header><a class="brand" href="./">bimba</a><span class="edition">Can you play with me?</span></header>
+    <header><a class="brand" href="./">Q.alina</a><span class="edition">Stay with me</span></header>
     <section class="room" id="room" aria-label="Companion play area">
       <section class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-question" hidden>
         <div class="chat-heading"><span id="chat-progress"></span><button id="chat-close" aria-label="Close chat">×</button></div>
         <h2 id="chat-question" tabindex="-1"></h2>
         <p id="chat-announcement"></p>
-        <p class="chat-privacy" id="chat-privacy">Only submitted answers are saved to the creator’s private inbox. Skip anything you’d rather not share.</p>
-        <div id="chat-name-field"><label for="chat-name">Your name (optional)</label><input id="chat-name" maxlength="40" autocomplete="nickname" placeholder="Leave blank to stay anonymous"></div>
+        <div id="chat-name-field"><label for="chat-name">Who are you?</label><input id="chat-name" maxlength="40" autocomplete="nickname" placeholder="Your name..."></div>
         <p id="chat-send-status" role="status" aria-live="polite" hidden></p>
         <div class="chat-choices" id="chat-choices"><button id="chat-yes">Yes</button><button id="chat-no">No</button></div>
         <form id="chat-form" hidden><label class="sr-only" for="chat-answer">Your answer</label><input id="chat-answer" placeholder="Tell me…" maxlength="240" autocomplete="off" required><button type="submit">Send</button></form>
@@ -27,8 +26,8 @@
       </section>
       <div class="pet" id="pet">
         <div class="bubble" id="bubble" role="status" aria-live="polite">Hi, I’m here.</div>
-        <button class="character" id="character" aria-label="Pet bimba or drag her to move">
-          <canvas id="canvas" width="280" height="350"></canvas><span id="loading">Waking up bimba…</span>
+        <button class="character" id="character" aria-label="Pet Q.alina or drag her to move">
+          <canvas id="canvas" width="280" height="350"></canvas><span id="loading">Waking up Q.alina…</span>
         </button>
         <button class="hand-zone hand-left" id="hand-left" aria-label="Hold hands and walk left"></button>
         <button class="hand-zone hand-right" id="hand-right" aria-label="Hold hands and walk right"></button>
@@ -37,7 +36,7 @@
       </div>
       <div class="companion-toolbar">
         <span id="state" hidden aria-hidden="true"></span>
-        <div class="controls" role="group" aria-label="Play with bimba">
+        <div class="controls" role="group" aria-label="Play with Q.alina">
           <button id="hold" class="pixel-action" aria-label="Hold hands to follow your cursor; click again to let go" aria-pressed="false"><img src="assets/icons/button-hold.svg" alt="" draggable="false"><span id="hold-label">Hold</span></button>
           <button id="pat" class="pixel-action" aria-label="Pet"><img src="assets/icons/button-heart.svg" alt="" draggable="false"><span>Pet</span></button>
           <button id="feed" class="pixel-action" aria-label="Feed"><img src="assets/icons/button-toast.png" alt="" draggable="false"><span id="feed-label">Feed</span></button>

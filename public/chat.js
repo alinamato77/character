@@ -17,7 +17,6 @@ import { chatContent } from './chat-content.js';
     get('chat-announcement').hidden = index !== -1;
     get('chat-progress').textContent = index === -1 ? 'A note from me · This week' : (isQuestion ? item.topic : 'A little company');
     get('chat-question').textContent = index === -1 ? 'Hey, you.' : item.text;
-    get('chat-privacy').hidden = !isQuestion;
     get('chat-name-field').hidden = !isQuestion;
     get('chat-choices').hidden = !isQuestion || item.type !== 'choice';
     get('chat-form').hidden = !isQuestion || item.type !== 'text';
@@ -69,7 +68,6 @@ import { chatContent } from './chat-content.js';
       get('chat-name').readOnly = false;
     }
     const item = current();
-    get('chat-privacy').hidden = true;
     get('chat-name-field').hidden = true;
     get('chat-choices').hidden = true;
     get('chat-form').hidden = true;
