@@ -14,15 +14,13 @@
     <section class="room" id="room" aria-label="Companion play area">
       <section class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-question" hidden>
         <div class="chat-heading"><span id="chat-progress"></span><button id="chat-close" aria-label="Close chat">×</button></div>
-        <h2 id="chat-question" tabindex="-1"></h2>
+        <h2 id="chat-question" tabindex="-1" aria-live="polite" aria-atomic="true"></h2>
         <div id="chat-announcement"><div class="announcement-letter"><p id="chat-announcement-text"></p><p id="chat-signature"></p></div><img class="announcement-note" src="assets/notes/bear-note.png" alt="" width="1254" height="1254" draggable="false"></div>
-        <div id="chat-name-field"><label for="chat-name">Who are you?</label><input id="chat-name" maxlength="40" autocomplete="nickname" placeholder="Your name..."></div>
         <p id="chat-send-status" role="status" aria-live="polite" hidden></p>
         <div class="chat-choices" id="chat-choices"><button id="chat-yes">Yes</button><button id="chat-no">No</button></div>
-        <form id="chat-form" hidden><label class="sr-only" for="chat-answer">Your answer</label><input id="chat-answer" placeholder="Tell me your mood today" maxlength="240" autocomplete="off" required><button type="submit">Send</button></form>
-        <p id="chat-reply" role="status" aria-live="polite" hidden></p>
-        <button id="chat-skip" hidden>Skip this question</button>
-        <button id="chat-next" hidden>Keep chatting</button>
+        <form id="chat-form" hidden><label class="sr-only" for="chat-answer">Your answer</label><input id="chat-answer" placeholder="Tell me your mood today" maxlength="240" autocomplete="off" required><button id="chat-submit" type="submit">Next</button></form>
+        <div id="chat-mail" aria-hidden="true" hidden><svg viewBox="0 0 64 48" class="mail-envelope" shape-rendering="crispEdges"><path fill="#f6dfb6" stroke="#795144" stroke-width="3" d="M8 10H56V40H8Z"/><path fill="none" stroke="#795144" stroke-width="3" d="M8 10L32 28L56 10M8 40L24 24M56 40L40 24"/></svg></div>
+        <button id="chat-next" hidden>Done</button>
       </section>
       <div class="pet" id="pet">
         <div class="bubble" id="bubble" role="status" aria-live="polite">Hi, I’m here.</div>
@@ -53,7 +51,7 @@
         <p class="hint tip" hidden>Hold her hand and move your cursor to walk together.</p>
         <p class="hint tip" hidden>Click again while holding hands to let go.</p>
         <p class="hint tip" hidden>Click Hello to share a little wave.</p>
-        <p class="hint tip" hidden>Click Chat to answer this week’s three questions.</p>
+        <p class="hint tip" hidden>Click Chat and tell me how your day was.</p>
       </div>
       <button id="tips-pause" class="tips-pause" aria-label="Pause interaction tips" aria-pressed="false"><span aria-hidden="true">Ⅱ</span></button>
     </footer>

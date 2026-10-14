@@ -1,8 +1,16 @@
-Edit public/chat-content.js for all Chat content.
-announcement: weekly note shown first.
-conversation: ordered companion moments and questions.
-type chat: no answer collected or stored.
-type text: typed answer saved only on Send.
-type choice: Yes/No answer saved on selection; provide yes and no replies.
-Keep question ids unique. Change edition when editing questions.
-Publish the website after editing; GitHub push is separate.
+Edit public/chat-content.js for all Chat words.
+announcement + signature: your weekly note shown first.
+questions: mood, hangout, and available date. Keep their IDs unchanged.
+replies: the automatic companion replies and sending messages.
+moodWords: positive and negative words used to choose the mood reply.
+Change edition when editing questions, then republish the website.
+
+Flow: announcement → mood → automatic reply → hangout.
+Yes asks for an available date, then replies and asks for a name.
+No replies gently and goes directly to the name.
+Final Send saves all question answers with that name to the private inbox.
+Replies are not recorded. Nothing is saved before the final Send.
+Mail sent means saved to the private inbox; it does not send an email.
+
+public/chat.js handles the steps and retry; public/chat-mood.js checks keywords.
+GitHub push is separate and only happens when requested.

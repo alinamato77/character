@@ -125,7 +125,6 @@ body.holding-hand .controls, body.holding-hand .controls * { cursor: pointer !im
 .chat-choices button { flex: 1; }
 #chat-answer { min-width: 0; width: 100%; border: 1px solid #8a6753; background: #fffdf6; padding: 7px 8px; color: #533c35; font: inherit; }
 #chat-answer:focus-visible { outline: 2px solid #c78244; outline-offset: 2px; }
-#chat-reply { margin: 0 0 10px; font-size: 12px; line-height: 1.5; }
 #chat-next { font-size: 11px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 body.holding-hand .chat-panel, body.holding-hand .chat-panel * { cursor: auto !important; }
@@ -138,10 +137,8 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
 .chat-panel button:disabled { opacity: .6; cursor: wait; }
 .owner-inbox-link { display: block; width: max-content; margin: 8px auto; color: #795a46; font-size: 11px; text-underline-offset: 3px; }
 
-#chat-name-field{margin:0 0 10px;font-size:11px}#chat-name-field label{display:block;margin-bottom:4px}#chat-name{font:inherit;width:100%;padding:6px 8px;background:#fffdf6;color:#533c35;border:1px solid #8a6753}#chat-name:focus-visible{outline:2px solid #c78244;outline-offset:2px}
 
 #chat-announcement { font-size: 15px; line-height: 1.65; white-space: pre-line; margin: 8px 0 16px; }
-#chat-skip { margin-top: 10px; background: transparent; box-shadow: none; font-size: 11px; }
 .chat-panel { max-height: calc(100% - 24px); overflow-y: auto; }
 
 /* Keep the original chat box and show the complete note as an attachment. */
@@ -170,3 +167,15 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
 
 /* Hidden announcement must win over its flex layout during questions. */
 #chat-announcement[hidden] { display: none; }
+
+/* A small pixel envelope lives in the existing chat panel. */
+#chat-mail { width: 100%; height: 84px; display: grid; place-items: center; overflow: hidden; }
+#chat-mail[hidden] { display: none; }
+.mail-envelope { width: 64px; height: 48px; }
+#chat-mail[data-state="sending"] .mail-envelope { animation: mail-wait 900ms ease-in-out infinite; }
+#chat-mail[data-state="sent"] .mail-envelope { animation: mail-send 700ms ease-in forwards; }
+.chat-panel[data-view="conversation"] #chat-next { display: block; width: fit-content; margin: 12px auto 0; }
+.chat-panel[data-view="conversation"] #chat-next[hidden] { display: none; }
+@keyframes mail-wait { 50% { transform: translateY(-6px) rotate(-4deg); } }
+@keyframes mail-send { to { transform: translate(160px,-32px) rotate(-12deg); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #chat-mail[data-state] .mail-envelope { animation: none; } }

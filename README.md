@@ -1,4 +1,4 @@
-# bimba
+# Q.alina
 
 A small pixel companion. The live address remains https://small-a-companion.wxie8.chatgpt.site/.
 
@@ -24,7 +24,7 @@ A small pixel companion. The live address remains https://small-a-companion.wxie
 - Pet: the existing animation and 2.6-second interaction, unchanged.
 - Hold: the existing left/right clips, one-second hand raise, cursor-following movement, repeat from one second, and click/boundary release, unchanged.
 - Hello: sit down if needed → seated wave → stand up → default.
-- Chat: announcement first, then five questions about day, feelings, work, health, and weekend plans, interleaved with companion moments. Only explicitly submitted question answers are saved to D1; Skip and companion moments never save. Pet and Hold remain unchanged.
+- Chat: announcement → mood → automatic keyword reply → hangout invitation → availability if Yes → automatic reply → name → sending animation → confirmation. No skips or extra description panels. Closing Chat preserves the current step and draft until the page is refreshed. Only the final Send saves all question answers together; companion replies are never saved.
 
 A new seated action is queued during another seated action or the stand-up transition, avoiding overlapping playback. All rendered frames use a 280 × 350 canvas and a common face-size reference and ground line. Pet and both Hold clip files retain their pre-update bytes. Very short blends soften switches between other clips.
 
@@ -43,7 +43,7 @@ GitHub publishing preference: do not push to GitHub unless the user explicitly r
 - `/inbox` uses a server-side access code stored only in secret `INBOX_ACCESS_CODE`. `INBOX_RATE_SALT` salts rate-limit keys. Anyone with the code can read messages.
 - Unlock sessions expire after two hours and use Secure, HttpOnly, SameSite cookies. Lock inbox revokes the session. Unlock attempts are limited to five per network and 100 globally per 15 minutes. Responses are private/no-store.
 - Chat submissions require an anonymous session, CSRF token, same-origin request, validated question and answer, and deduplicated submission ID.
-- Names are optional, visitor-provided, and limited to 40 characters; old or unnamed answers remain anonymous. The inbox shows the question, answer, name or anonymous label, and Pacific timestamp, with 30 records per page.
-- Durable answers and temporary sessions use D1. Applied migrations in `drizzle/` must never be rewritten. Failed saves preserve visitor input. Email delivery and two-way replies are not implemented.
+- A visitor name is required at the final step and limited to 40 characters; older unnamed answers remain anonymous. The inbox shows the question, answer, name or anonymous label, and Pacific timestamp, with 30 records per page.
+- Durable answers and temporary sessions use D1. Applied migrations in `drizzle/` must never be rewritten. Failed saves preserve the full letter for an identical retry. The envelope confirms delivery to the creator inbox, not external email. The scheduling reply is companion dialogue; it does not book a calendar event.
 - Build: `npm run build`. Tests: `node tests/interactions.test.cjs`, `node tests/chat.test.cjs`, and `tests/inbox.integration.mjs` against a local Worker with test-only secrets.
 - Frontend and server import the same `public/chat-content.js`; no duplicate question list to maintain. Change `edition` when editing questions, then republish. Saved answers retain the original question text.
