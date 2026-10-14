@@ -162,3 +162,8 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
   .chat-panel[data-view="announcement"] #chat-next { transition: none; }
   .chat-panel[data-view="announcement"] #chat-next:hover, .chat-panel[data-view="announcement"] #chat-next:active { transform: none; }
 }
+
+/* Give the announcement heading, letter, and action separate breathing room. */
+.chat-panel[data-view="announcement"] { padding: 16px 18px 20px; }
+.chat-panel[data-view="announcement"] .chat-heading { margin-bottom: 24px; }
+.chat-panel[data-view="announcement"] #chat-announcement { margin-bottom: 24px; }
