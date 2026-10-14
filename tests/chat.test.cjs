@@ -18,7 +18,7 @@ vm.runInContext(fs.readFileSync(path.join(__dirname,'../public/chat.js'),'utf8')
 const click = id => el(id).events.click();
 (async () => {
 click('talk');
-assert.equal(el('chat-announcement').textContent,content.announcement);
+assert.equal(el('chat-announcement-text').textContent,content.announcement);
 assert.equal(el('chat-form').hidden,true);
 assert.equal(posted.length,0);
 click('chat-next');

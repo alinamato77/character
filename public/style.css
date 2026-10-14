@@ -143,3 +143,11 @@ body.holding-hand .chat-panel button { cursor: pointer !important; }
 #chat-announcement { font-size: 15px; line-height: 1.65; white-space: pre-line; margin: 8px 0 16px; }
 #chat-skip { margin-top: 10px; background: transparent; box-shadow: none; font-size: 11px; }
 .chat-panel { max-height: calc(100% - 24px); overflow-y: auto; }
+
+/* The supplied note artwork is cropped by CSS, preserving the original PNG. */
+.chat-panel[data-view="announcement"] { border: 0; padding: 0; background: transparent; box-shadow: none; overflow: visible; container-type: inline-size; }
+.chat-panel[data-view="announcement"] .chat-heading { position: absolute; top: 7%; left: 21%; right: 6%; z-index: 1; }
+.chat-panel[data-view="announcement"] #chat-question { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.chat-panel[data-view="announcement"] #chat-announcement { position: relative; margin: 0; width: 100%; aspect-ratio: 1.59; background-image: url("assets/notes/Firefly_gpt-image_remove background, change icon and font to 2d pixel style. use bear as symbol. use br 571370.png"); background-size: 115% 183.5%; background-position: 50% 46.5%; background-repeat: no-repeat; image-rendering: pixelated; }
+#chat-announcement-text { position: absolute; top: 19%; left: 20%; width: 70%; margin: 0; color: #65412c; font-size: clamp(11px, 3.2cqw, 14px); line-height: 9cqw; white-space: pre-line; }
+.chat-panel[data-view="announcement"] #chat-next { display: block; margin: 10px auto 0; }
