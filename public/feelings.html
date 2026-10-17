@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5ecd9">
+  <meta name="description" content="Find words for a feeling with Q.alina. See what you said, question Q’s guesses, and make the final words your own.">
+  <title>Help me say how I feel · Q.alina</title>
+  <link rel="stylesheet" href="/feelings.css">
+  <script type="module" src="/feelings.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to the writing space</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Q.alina companion home"><span class="brand-flower" aria-hidden="true">✳</span> Q.alina</a>
+      <a class="home-link" href="/">Back to the room <span aria-hidden="true">↗</span></a>
+    </header>
+    <main>
+      <div class="page-intro">
+        <p class="eyebrow"><span class="tiny-square" aria-hidden="true"></span> A little room for your feelings</p>
+        <h1>Help me say <br>how I feel<span class="title-dot">.</span></h1>
+        <p class="intro-copy">The words can be messy. We’ll sort them out together.<br class="desktop-break"> You get the final say.</p>
+      </div>
+      <div class="coach-layout">
+        <aside class="companion-side" aria-label="Your companion Q">
+          <div class="room-label"><span aria-hidden="true">✳</span> A moment with Q</div>
+          <div class="q-bubble"><p id="q-words">You know your feelings.<br>I’m just here to help with the words.</p><span class="bubble-tail" aria-hidden="true"></span></div>
+          <div class="character-stage">
+            <button id="q-character" class="q-character" aria-label="Say hello to Q"><canvas id="q-canvas" width="280" height="350" aria-hidden="true"></canvas><span id="q-loading">Q is getting comfortable…</span></button>
+            <span class="floor-line" aria-hidden="true"></span>
+            <span class="room-spark spark-one" aria-hidden="true">✦</span><span class="room-spark spark-two" aria-hidden="true">+</span>
+          </div>
+          <div class="companion-caption"><span class="status-dot" aria-hidden="true"></span> Here to listen, open to correction.</div>
+          <button id="motion-toggle" class="quiet-button" aria-pressed="false">Pause animation</button>
+        </aside>
+        <section id="workspace" class="workspace" aria-label="Feeling writing coach" tabindex="-1">
+          <nav class="step-nav" aria-label="Your progress"><ol id="steps"></ol><span class="step-count" id="step-count">01 / 04</span></nav>
+          <div id="coach-view"></div>
+          <noscript><p class="noscript">Please enable JavaScript to use the interactive coach. Your words stay in your browser.</p></noscript>
+        </section>
+      </div>
+      <footer class="page-footer">
+        <p><span aria-hidden="true">⌁</span> Your words stay in this tab. Nothing you write here is sent or saved.</p>
+        <details class="about-demo"><summary>About this little experiment <span aria-hidden="true">+</span></summary><p>A scripted Coach prototype for “Show How Sure It Is.” The three examples use prepared interpretations and rewrites, not a live AI model. For your own text, Q quotes your words and asks you to supply the feeling. A guess stays a guess until you confirm it.</p></details>
+        <div class="footer-signature"><span>Made with care, by Alina.</span><span>Less guessing. More asking.</span></div>
+      </footer>
+    </main>
+  </div>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <video id="q-video" src="/assets/animations/default.mp4" muted playsinline loop preload="auto" hidden></video>
+</body>
+</html>

@@ -2,6 +2,18 @@
 
 A small pixel companion. The live address remains https://small-a-companion.wxie8.chatgpt.site/.
 
+## Help me say how I feel
+
+`/feelings` is an English Coach prototype for the “Show How Sure It Is” assignment. Home and Chat link to it through “Find my words.” It reuses the existing character animation without changing its asset bytes.
+
+- Three scripted examples distinguish words the visitor supplied, unconfirmed interpretations, and feelings the visitor explicitly confirms.
+- Visitors can reject both guesses, supply their own feeling, or remain unsure. Drafts include only confirmed feelings and preserve an uncertain choice.
+- Custom text is quoted verbatim and never matched by keywords to a prepared emotional interpretation. The visitor supplies the feeling.
+- Every draft is editable and must be reviewed before the final copyable note. Back navigation retains edits; starting fresh clears them. Clipboard failure offers selectable text.
+- The coach makes no API calls and uses no persistent browser storage. Its contents are never sent to the creator inbox. The existing weekly Chat and inbox remain separate.
+- Content and drafting rules: `public/feelings-model.js`. Page interaction: `public/feelings.js`. Layout: `public/feelings.html` and `public/feelings.css`.
+- Check: `node --test tests/feelings.test.mjs`. The existing interaction and Chat tests also apply to the home page.
+
 ## Project layout
 
 - `public/`: companion HTML, browser scripts, and animation assets. `dist/` is generated Worker build output; do not edit it. The home route serves `public/companion.html`.
