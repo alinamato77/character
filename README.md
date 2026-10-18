@@ -6,12 +6,14 @@ A small pixel companion. The live address remains https://small-a-companion.wxie
 
 `/feelings` is an English Coach prototype for the “Show How Sure It Is” assignment. Home and Chat link to it through “Find my words.” It reuses the existing character animation without changing its asset bytes.
 
-- Three scripted examples distinguish words the visitor supplied, unconfirmed interpretations, and feelings the visitor explicitly confirms.
-- Visitors can reject both guesses, supply their own feeling, or remain unsure. Drafts include only confirmed feelings and preserve an uncertain choice.
-- Custom text is quoted verbatim and never matched by keywords to a prepared emotional interpretation. The visitor supplies the feeling.
+- All text, including custom entries, follows six steps: Words → Feelings → Details → Check → Draft → Keep. Three optional examples remain available.
+- Twelve pixel-face choices include Anxious, Depressed, Happy, Content, Tired, Overwhelmed, Sad, Excited, Disappointed, Relieved, a custom label, and uncertainty. Named feelings can be combined; uncertainty is exclusive.
+- Each feeling has its own explanation, reflection question, and writing tip. Visitors choose intensity (including “Hard to tell”), optionally add context and a request, then review the distinction between their input and Q’s tentative interpretation.
+- The shared check requires explicit visitor confirmation before drafting. Drafts preserve exact original words and include only selected feelings and details. Changing an upstream choice invalidates the old review and draft.
+- Custom text is never classified by keywords. A user-selected “Depressed” label is treated as the visitor’s description, not a diagnosis. Nothing requires a cause, a positive spin, or a definite emotion label.
 - Every draft is editable and must be reviewed before the final copyable note. Back navigation retains edits; starting fresh clears them. Clipboard failure offers selectable text.
 - The coach makes no API calls and uses no persistent browser storage. Its contents are never sent to the creator inbox. The existing weekly Chat and inbox remain separate.
-- Content and drafting rules: `public/feelings-model.js`. Page interaction: `public/feelings.js`. Layout: `public/feelings.html` and `public/feelings.css`.
+- Content and drafting rules: `public/feelings-model.js`. Pixel faces: `public/feelings-icons.js`. Page interaction: `public/feelings.js`. Layout: `public/feelings.html` and `public/feelings.css`.
 - Check: `node --test tests/feelings.test.mjs`. The existing interaction and Chat tests also apply to the home page.
 
 ## Project layout
