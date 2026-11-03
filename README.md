@@ -1,6 +1,23 @@
 # Q.alina
 
-A small pixel companion. The live address remains https://small-a-companion.wxie8.chatgpt.site/.
+A small pixel companion, owned and deployed independently.
+
+- Website: https://alinamato77.github.io/character/ — full static website, no redirect.
+- Private inbox: https://qalina-api.qalina.workers.dev/inbox — your Cloudflare account.
+- Source and assets: this repository's `main` branch. GitHub Pages publishes `gh-pages`.
+- The previous Sites deployment remains separate; it is not used by the GitHub Pages website.
+
+## Publishing to your accounts
+
+1. Edit the source on `main`; `public/chat-content.js` holds your weekly note and question text.
+2. Run `npm ci` if dependencies are not installed, then `npm run build:cloudflare`.
+3. Sign in with `npx wrangler login`, then run `npm run deploy:cloudflare`.
+4. Run `npm run build:pages`. Publish the contents of `dist/github-pages/` to the root of `gh-pages`, including `.nojekyll`.
+5. Commit and push the source changes to `main` separately. Build/deploy the backend whenever shared question content changes, so both sides use the same edition.
+
+`cloudflare.deploy.json` contains public deployment IDs and URLs, never credentials. The Worker uses your D1 database. Set `INBOX_ACCESS_CODE` and `INBOX_RATE_SALT` with Wrangler secrets; never commit them. New databases need `npx wrangler d1 migrations apply qalina-inbox --remote --config dist/server/wrangler.personal.json` after building. Original inbox messages were not migrated.
+
+GitHub Pages calls only the chat API using a temporary in-memory visitor token and CSRF token. The Worker accepts the configured GitHub origin only. Inbox access stays first-party on Cloudflare and uses HttpOnly cookies. Static pages do not contain the inbox access code. Third-party cookies and ChatGPT login are not required.
 
 ## Help me say how I feel
 

@@ -7,6 +7,8 @@ import { moodReply } from './chat-mood.js';
   const input = get('chat-answer'), form = get('chat-form');
   const next = get('chat-next'), title = get('chat-question');
   const mail = get('chat-mail'), status = get('chat-send-status');
+  const apiBase = document.querySelector?.('meta[name="qalina-api-origin"]')?.content || '';
+  let remoteSessionToken = '';
   // Flow: announcement → mood → mood reply → hangout → [date → reply] → name → sending → sent.
   let step = 'announcement', reply = '', afterReply = '', timer;
   let sending = false, submissionId = crypto.randomUUID(), pending = null;
@@ -76,11 +78,19 @@ import { moodReply } from './chat-mood.js';
     sending = true; step = 'sending'; render();
     const animation = new Promise(resolve => setTimeout(resolve, 1000));
     try {
-      const sessionResponse = await fetch('/api/chat/session',{cache:'no-store'});
+      const sessionResponse = await fetch(`${apiBase}/api/chat/session`,{
+        cache:'no-store', credentials:apiBase ? 'omit' : 'same-origin',
+        headers:remoteSessionToken ? {Authorization:`Bearer ${remoteSessionToken}`} : {}
+      });
       const session = await sessionResponse.json();
       if (!sessionResponse.ok || !session.csrf) throw new Error('session');
-      const response = await fetch('/api/chat/answers',{
-        method:'POST',headers:{'Content-Type':'application/json','X-Bimba-CSRF':session.csrf},body:JSON.stringify(pending)
+      if (apiBase) {
+        if (!session.token) throw new Error('session token');
+        remoteSessionToken = session.token;
+      }
+      const response = await fetch(`${apiBase}/api/chat/answers`,{
+        method:'POST', credentials:apiBase ? 'omit' : 'same-origin',
+        headers:{'Content-Type':'application/json','X-Bimba-CSRF':session.csrf,...(apiBase ? {Authorization:`Bearer ${remoteSessionToken}`} : {})},body:JSON.stringify(pending)
       });
       const result = await response.json();
       if (!response.ok || !result.saved) throw new Error('save');

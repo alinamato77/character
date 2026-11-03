@@ -1,0 +1,8 @@
+{
+  "name": "qalina-api",
+  "account_id": "d55052e37932704cb959db271fe216a6",
+  "database_name": "qalina-inbox",
+  "database_id": "9effc8d5-33cd-49e4-bf02-7bbeacd795c4",
+  "frontend_origin": "https://alinamato77.github.io",
+  "backend_origin": "https://qalina-api.qalina.workers.dev"
+}

@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const { webcrypto } = require('node:crypto');
 const read = file => fs.readFileSync(path.join(__dirname, '../public', file), 'utf8');
 
-function createChat() {
+function createChat(remote = false) {
   const elements = new Map(), events = {}, timers = new Map(), requests = [], posted = [];
   let now = 0, timerId = 0, failSave = false, failSession = false;
   const element = id => {
@@ -24,14 +24,19 @@ function createChat() {
     }
     return elements.get(id);
   };
-  const document = { hidden: false, getElementById: element, addEventListener(type, fn) { events[type] = fn; } };
+  const document = { hidden: false, querySelector:()=>remote?{content:'https://backend.example'}:null, getElementById: element, addEventListener(type, fn) { events[type] = fn; } };
   const context = vm.createContext({
     Date, crypto: webcrypto, document,
     setTimeout(fn, delay) { const id = ++timerId; timers.set(id, { fn, at: now + delay }); return id; },
     clearTimeout(id) { timers.delete(id); },
     fetch: async (url, options) => {
       requests.push(url);
-      if (url.endsWith('/session')) return { ok: !failSession, json: async () => failSession ? {} : { csrf: 'test-csrf' } };
+      if(remote) {
+        assert(url.startsWith('https://backend.example/'));
+        assert.equal(options.credentials,'omit');
+        if(posted.length || url.endsWith('/answers')) assert.equal(options.headers.Authorization,'Bearer test-token');
+      }
+      if (url.endsWith('/session')) return { ok: !failSession, json: async () => failSession ? {} : { csrf: 'test-csrf', token:'test-token' } };
       posted.push(JSON.parse(options.body));
       assert.equal(options.headers['X-Bimba-CSRF'], 'test-csrf');
       return { ok: !failSave, json: async () => failSave ? { error: 'Not saved.' } : { saved: true } };
@@ -174,5 +179,13 @@ const title = chat => chat.element('chat-question').textContent;
     { questionId: 'hangout', answer: 'no' },
   ]);
   assert(!read('companion.html').includes('chat-skip'), 'Skip is removed from the interface');
+  const remote=createChat(true);
+  remote.click('talk');remote.click('chat-next');remote.submit('happy');remote.advance(2600);
+  remote.click('chat-no');remote.advance(2600);
+  remote.failSave(true);await remote.submit('GitHub visitor');
+  remote.failSave(false);const remoteRetry=remote.submit('GitHub visitor');
+  await flush();remote.advance(1000);await remoteRetry;
+  assert.equal(title(remote),c.replies.sent);
+  assert.deepEqual(remote.posted[0],remote.posted[1],'Cross-origin retry preserves payload and authenticated session');
   console.log('Passed: yes/no flow, keyword negations, timed replies and visibility pause, draft persistence, final-only collection, safe retry, failures, and sent animation.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

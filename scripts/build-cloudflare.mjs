@@ -1,0 +1,14 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {spawnSync} from 'node:child_process';
+const settings=JSON.parse(readFileSync(new URL('../cloudflare.deploy.json',import.meta.url),'utf8'));
+const build=spawnSync(process.execPath,['scripts/run-framework.mjs','build'],{stdio:'inherit',env:{...process.env,QALINA_CLOUDFLARE:'1'}});
+if(build.status!==0) process.exit(build.status || 1);
+const config=JSON.parse(readFileSync('dist/server/wrangler.json','utf8'));
+config.name=settings.name;
+config.account_id=settings.account_id;
+config.workers_dev=true;
+config.preview_urls=false;
+config.d1_databases=[{binding:'DB',database_name:settings.database_name,database_id:settings.database_id,migrations_dir:'../../drizzle'}];
+config.vars={FRONTEND_ORIGIN:settings.frontend_origin};
+writeFileSync('dist/server/wrangler.personal.json',JSON.stringify(config,null,2)+'\n');
+console.log('Cloudflare build ready: dist/server/wrangler.personal.json');
