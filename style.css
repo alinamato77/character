@@ -35,6 +35,7 @@ main {
 }
 header { height: 82px; padding: 0 36px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 4px solid #b58a67; box-shadow: inset 0 4px #fffaf0; }
 .brand { font-size: 23px; letter-spacing: -1px; text-decoration: none; color: #795144; }
+.chat-coach-link { display: block; margin: 0 0 14px; color: #795144; font-size: 10px; line-height: 1.6; text-underline-offset: 3px; }
 .edition { font-size: 12px; color: #8c6955; text-align: right; }
 .room {
   height: 610px;
@@ -67,7 +68,7 @@ body.holding-hand .controls, body.holding-hand .controls * { cursor: pointer !im
 .character.cursor-toast { cursor: url('assets/cursors/cursor-toast.png') 16 16,pointer; }
 .companion-toolbar { position: absolute; left: 36px; right: 36px; bottom: 24px; display: flex; justify-content: center; }
 .controls { display: flex; gap: 6px; }
-.pixel-action { width: 70px; min-height: 82px; flex: 0 0 70px; padding: 0 2px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 5px; color: #493024; transition: transform .12s; }
+.pixel-action { width: 70px; min-height: 82px; flex: 0 0 70px; padding: 0 2px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 5px; color: #493024; text-decoration: none; transition: transform .12s; }
 .pixel-action img { display: block; width: 56px; height: 56px; object-fit: contain; image-rendering: pixelated; pointer-events: none; }
 .pixel-action span { font-size: 11px; white-space: nowrap; pointer-events: none; }
 .pixel-action:hover { transform: translateY(-4px); }
@@ -96,13 +97,14 @@ body.holding-hand .controls, body.holding-hand .controls * { cursor: pointer !im
   .bubble { font-size: 12px; max-width: 290px; width: max-content; white-space: normal; text-align: center; }
   .companion-toolbar { left: 12px; right: 12px; bottom: 20px; }
   .controls { gap: 3px; }
-  .pixel-action { width: 54px; flex-basis: 54px; }
+  .pixel-action { width: 48px; flex-basis: 48px; }
   .pixel-action img { width: 48px; height: 48px; }
   .pixel-action span { font-size: 10px; }
 }
 @media (max-width: 360px) {
   .controls { width: 100%; justify-content: space-between; gap: 0; }
-  .pixel-action { width: 48px; flex-basis: 48px; }
+  .pixel-action { width: 44px; flex-basis: 44px; }
+  .pixel-action img { width: 44px; height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pet, .pixel-action { transition: none; }
@@ -125,10 +127,57 @@ body.holding-hand .controls, body.holding-hand .controls * { cursor: pointer !im
 .chat-choices button { flex: 1; }
 #chat-answer { min-width: 0; width: 100%; border: 1px solid #8a6753; background: #fffdf6; padding: 7px 8px; color: #533c35; font: inherit; }
 #chat-answer:focus-visible { outline: 2px solid #c78244; outline-offset: 2px; }
-#chat-reply { margin: 0 0 10px; font-size: 12px; line-height: 1.5; }
 #chat-next { font-size: 11px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 body.holding-hand .chat-panel, body.holding-hand .chat-panel * { cursor: auto !important; }
 body.holding-hand .chat-panel button { cursor: pointer !important; }
 @keyframes chat-appear { from { opacity: 0; margin-top: -6px; } to { opacity: 1; margin-top: 0; } }
 @media (prefers-reduced-motion: reduce) { .chat-panel { animation: none; } }
+
+.chat-privacy { font-size: 11px; line-height: 1.45; color: #795a46; margin: 0 0 10px; }
+#chat-send-status { font-size: 11px; line-height: 1.45; margin: 0 0 8px; }
+.chat-panel button:disabled { opacity: .6; cursor: wait; }
+.owner-inbox-link { display: block; width: max-content; margin: 8px auto; color: #795a46; font-size: 11px; text-underline-offset: 3px; }
+
+
+#chat-announcement { font-size: 15px; line-height: 1.65; white-space: pre-line; margin: 8px 0 16px; }
+.chat-panel { max-height: calc(100% - 24px); overflow-y: auto; }
+
+/* Keep the original chat box and show the complete note as an attachment. */
+#chat-announcement { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; }
+#chat-announcement-text { flex: 1; min-width: 0; margin: 0; color: #65412c; font-size: 14px; line-height: 1.65; white-space: pre-line; overflow-wrap: anywhere; }
+.announcement-note { display: block; flex: 0 0 auto; width: 120px; max-width: 32%; height: auto; object-fit: contain; image-rendering: pixelated; }
+
+.announcement-letter { flex: 1; min-width: 0; }
+#chat-signature { margin: 14px 0 0; text-align: right; font-size: 14px; line-height: 1.65; }
+/* Announcement call to action: fixed double-width, responsive on narrow screens. */
+.chat-panel[data-view="announcement"] #chat-next { display: block; width: 224px; max-width: 100%; min-height: 44px; margin: 0 auto; padding: 10px 16px; font-size: 16px; font-weight: 700; font-synthesis: weight; line-height: 1.35; border: 2px solid #8a6753; box-shadow: 3px 3px 0 #cdb18a; cursor: pointer; transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease; }
+@media (hover: hover) {
+  .chat-panel[data-view="announcement"] #chat-next:hover { background: #ffe6b0; transform: translateY(-2px); box-shadow: 3px 5px 0 #b9946c; }
+}
+.chat-panel[data-view="announcement"] #chat-next:focus-visible { outline: 3px solid #875538; outline-offset: 4px; background: #ffe6b0; }
+.chat-panel[data-view="announcement"] #chat-next:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 #cdb18a; }
+@media (prefers-reduced-motion: reduce) {
+  .chat-panel[data-view="announcement"] #chat-next { transition: none; }
+  .chat-panel[data-view="announcement"] #chat-next:hover, .chat-panel[data-view="announcement"] #chat-next:active { transform: none; }
+}
+
+/* Give the announcement heading, letter, and action separate breathing room. */
+.chat-panel[data-view="announcement"] { padding: 16px 18px 20px; }
+.chat-panel[data-view="announcement"] .chat-heading { margin-bottom: 24px; }
+.chat-panel[data-view="announcement"] #chat-announcement { margin-bottom: 24px; }
+
+/* Hidden announcement must win over its flex layout during questions. */
+#chat-announcement[hidden] { display: none; }
+
+/* A small pixel envelope lives in the existing chat panel. */
+#chat-mail { width: 100%; height: 84px; display: grid; place-items: center; overflow: hidden; }
+#chat-mail[hidden] { display: none; }
+.mail-envelope { width: 64px; height: 48px; }
+#chat-mail[data-state="sending"] .mail-envelope { animation: mail-wait 900ms ease-in-out infinite; }
+#chat-mail[data-state="sent"] .mail-envelope { animation: mail-send 700ms ease-in forwards; }
+.chat-panel[data-view="conversation"] #chat-next { display: block; width: fit-content; margin: 12px auto 0; }
+.chat-panel[data-view="conversation"] #chat-next[hidden] { display: none; }
+@keyframes mail-wait { 50% { transform: translateY(-6px) rotate(-4deg); } }
+@keyframes mail-send { to { transform: translate(160px,-32px) rotate(-12deg); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #chat-mail[data-state] .mail-envelope { animation: none; } }

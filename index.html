@@ -1,13 +1,80 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta name="qalina-api-origin" content="https://qalina-api.qalina.workers.dev">
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f9efd9">
+  <meta name="description" content="Meet Q.alina, your cozy pixel companion. Hold hands, share toast, and spend a little time together.">
   <title>Q.alina — Stay with me</title>
-  <meta http-equiv="refresh" content="0; url=https://small-a-companion.wxie8.chatgpt.site/">
-  <link rel="canonical" href="https://small-a-companion.wxie8.chatgpt.site/">
-  <script>window.location.replace('https://small-a-companion.wxie8.chatgpt.site/');</script>
-  <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f4e2c4;color:#795144;font-family:monospace}a{color:inherit;font-size:20px;padding:24px}</style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body><a href="https://small-a-companion.wxie8.chatgpt.site/">Stay with Q.alina →</a></body>
+<body>
+  <main>
+    <header><a class="brand" href="./">Q.alina</a><span class="edition">Stay with me</span></header>
+    <section class="room" id="room" aria-label="Companion play area">
+      <section class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-question" hidden>
+        <div class="chat-heading"><span id="chat-progress"></span><button id="chat-close" aria-label="Close chat">×</button></div>
+        <a class="chat-coach-link" href="feelings.html">Need help saying how you feel? ↗</a>
+        <h2 id="chat-question" tabindex="-1" aria-live="polite" aria-atomic="true"></h2>
+        <div id="chat-announcement"><div class="announcement-letter"><p id="chat-announcement-text"></p><p id="chat-signature"></p></div><img class="announcement-note" src="assets/notes/bear-note.png" alt="" width="1254" height="1254" draggable="false"></div>
+        <p id="chat-send-status" role="status" aria-live="polite" hidden></p>
+        <div class="chat-choices" id="chat-choices"><button id="chat-yes">Yes</button><button id="chat-no">No</button></div>
+        <form id="chat-form" hidden><label class="sr-only" for="chat-answer">Your answer</label><input id="chat-answer" placeholder="Tell me your mood today" maxlength="240" autocomplete="off" required><button id="chat-submit" type="submit">Next</button></form>
+        <div id="chat-mail" aria-hidden="true" hidden><svg viewBox="0 0 64 48" class="mail-envelope" shape-rendering="crispEdges"><path fill="#f6dfb6" stroke="#795144" stroke-width="3" d="M8 10H56V40H8Z"/><path fill="none" stroke="#795144" stroke-width="3" d="M8 10L32 28L56 10M8 40L24 24M56 40L40 24"/></svg></div>
+        <button id="chat-next" hidden>Done</button>
+      </section>
+      <div class="pet" id="pet">
+        <div class="bubble" id="bubble" role="status" aria-live="polite">Hi, I’m here.</div>
+        <button class="character" id="character" aria-label="Pet Q.alina or drag her to move">
+          <canvas id="canvas" width="280" height="350"></canvas><span id="loading">Waking up Q.alina…</span>
+        </button>
+        <button class="hand-zone hand-left" id="hand-left" aria-label="Hold hands and walk left"></button>
+        <button class="hand-zone hand-right" id="hand-right" aria-label="Hold hands and walk right"></button>
+        <img id="hold-indicator" class="hold-indicator" src="assets/cursors/cursor-hold.svg" alt="" aria-hidden="true" draggable="false" hidden>
+        <div id="particles" aria-hidden="true"></div>
+      </div>
+      <div class="companion-toolbar">
+        <span id="state" hidden aria-hidden="true"></span>
+        <div class="controls" role="group" aria-label="Play with Q.alina">
+          <button id="hold" class="pixel-action" aria-label="Hold hands to follow your cursor; click again to let go" aria-pressed="false"><img src="assets/icons/button-hold.svg" alt="" draggable="false"><span id="hold-label">Hold</span></button>
+          <button id="pat" class="pixel-action" aria-label="Pet"><img src="assets/icons/button-heart.svg" alt="" draggable="false"><span>Pet</span></button>
+          <button id="feed" class="pixel-action" aria-label="Feed"><img src="assets/icons/button-toast.png" alt="" draggable="false"><span id="feed-label">Feed</span></button>
+          <button id="hello" class="pixel-action" aria-label="Say hello"><img src="assets/icons/button-hand.png" alt="" draggable="false"><span>Hello</span></button>
+          <button id="talk" class="pixel-action" aria-label="Chat" aria-controls="chat-panel" aria-expanded="false"><img src="assets/icons/button-bubble.png" alt="" draggable="false"><span>Chat</span></button>
+        </div>
+      </div>
+    </section>
+    <footer class="tips-footer" aria-label="Interaction tips">
+      <div class="tip-window" id="tip-window" aria-live="off">
+        <p class="hint tip active">Click her head to give her a gentle pat.</p>
+        <p class="hint tip" hidden>Click her face or neck to feed her toast.</p>
+        <p class="hint tip" hidden>Drag her to lift her and choose a new spot.</p>
+        <p class="hint tip" hidden>Hold her hand and move your cursor to walk together.</p>
+        <p class="hint tip" hidden>Click again while holding hands to let go.</p>
+        <p class="hint tip" hidden>Click Hello to share a little wave.</p>
+        <p class="hint tip" hidden>Click Chat and tell me how your day was.</p>
+      </div>
+      <button id="tips-pause" class="tips-pause" aria-label="Pause interaction tips" aria-pressed="false"><span aria-hidden="true">Ⅱ</span></button>
+    </footer>
+    <a class="owner-inbox-link" href="https://qalina-api.qalina.workers.dev/inbox">Creator inbox</a>
+  </main>
+  <video id="video-default" src="assets/animations/default.mp4" muted playsinline loop preload="auto" hidden></video>
+  <video id="video-jump" src="assets/animations/jump.mp4" muted playsinline loop preload="auto" hidden></video>
+  <video id="video-walk" src="assets/animations/walk.mp4" muted playsinline loop preload="auto" hidden></video>
+  <video id="video-pet" src="assets/animations/pet.mp4" muted playsinline loop preload="auto" hidden></video>
+  <video id="video-sit" src="assets/animations/sit.mp4" muted playsinline preload="auto" hidden></video>
+  <video id="video-rest" src="assets/animations/rest.mp4" muted playsinline preload="auto" hidden></video>
+  <video id="video-stand" src="assets/animations/stand.mp4" muted playsinline preload="auto" hidden></video>
+  <video id="video-feed" src="assets/animations/feed.mp4" muted playsinline preload="auto" hidden></video>
+  <video id="video-eat" src="assets/animations/eat.mp4" muted playsinline preload="auto" hidden></video>
+  <video id="video-hello" src="assets/animations/hello.mp4" muted playsinline preload="auto" hidden></video>
+  <video id="video-think" src="assets/animations/think.mp4" muted playsinline preload="auto" hidden></video>
+  <video id="video-hold-left" src="assets/animations/hold-left.mp4" muted playsinline preload="auto" hidden></video>
+  <video id="video-hold-right" src="assets/animations/hold-right.mp4" muted playsinline preload="auto" hidden></video>
+  <script src="assets/animations/hold-anchors.js"></script>
+  <script src="app.js"></script>
+  <script type="module" src="chat.js"></script>
+  <script src="tips.js"></script>
+</body>
 </html>

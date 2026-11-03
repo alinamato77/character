@@ -31,6 +31,7 @@ let drag = null;
 let bubbleTimer, defaultTimer, sitTimer, patTimer, patMotionTimer;
 let holdDirection = 1;
 let holdTarget = null;
+let holdPointer = null;
 let transitionStart = null;
 let transitionPending = false;
 
@@ -199,6 +200,7 @@ function holdHand(side) {
   if (!['default', 'jump', 'walk', 'petting'].includes(state)) return;
   clearActionTimers();
   holdDirection = side;
+  holdPointer = null;
   holdTarget = { x: pet.offsetLeft, y: pet.offsetTop };
   document.body.classList.add('holding-hand');
   canvas.style.transform = '';
@@ -228,8 +230,16 @@ function updateHoldIndicator() {
   const a = points[index], b = points[Math.min(index + 1, points.length - 1)];
   const x = a[0] + (b[0] - a[0]) * fraction;
   const y = a[1] + (b[1] - a[1]) * fraction;
-  indicator.style.left = `${x / W * 100}%`;
-  indicator.style.top = `${y / H * 100}%`;
+  const handX = x / W * pet.offsetWidth, handY = y / H * pet.offsetHeight;
+  const bounds = pet.getBoundingClientRect();
+  // Orbit only on the outside of the hand: the 40px radius and limited arc
+  // keep the 32px icon clear of fingers and sleeves, even at mobile sizes.
+  const dx = holdPointer ? holdPointer.x - bounds.left - handX : holdDirection;
+  const dy = holdPointer ? holdPointer.y - bounds.top - handY : 0;
+  const angle = Math.max(-.6, Math.min(.6, Math.atan2(dy, Math.abs(dx))));
+  indicator.style.left = `${handX + holdDirection * Math.cos(angle) * 40}px`;
+  indicator.style.top = `${handY + Math.sin(angle) * 40}px`;
+  indicator.style.transform = `translate(-50%, -50%) rotate(${holdDirection * angle * .5}rad)`;
 }
 
 function moveCharacter(timestamp) {
@@ -330,6 +340,7 @@ $('talk').addEventListener('click', () => {
 
 document.addEventListener('pointermove', e => {
   if (state !== 'holding') return;
+  holdPointer = { x: e.clientX, y: e.clientY };
   if (e.clientX <= 1 || e.clientY <= 1 || e.clientX >= window.innerWidth - 1 || e.clientY >= window.innerHeight - 1) { releaseHand(); return; }
   const bounds = room.getBoundingClientRect();
   holdTarget = {
